@@ -1,7 +1,7 @@
 exports.emailVerfication = ({
   title = 'Verifica tu email',
   name = '',
-  link = '',
+  link = 'https://crm.elgatoconbolsas.es',
   time = new Date(),
 }) => {
   return `
@@ -32,7 +32,7 @@ exports.emailVerfication = ({
 exports.passwordVerfication = ({
   title = 'Restablece tu contraseña',
   name = '',
-  link = '',
+  link = 'https://crm.elgatoconbolsas.es',
   time = new Date(),
 }) => {
   return `
