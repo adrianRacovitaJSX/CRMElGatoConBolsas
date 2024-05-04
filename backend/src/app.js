@@ -56,12 +56,21 @@ const app = express();
 //   // }
 // });
 
-app.use(
+if (process.env.NODE_ENV === 'production') {
+  app.use(
   cors({
-    origin: true,
-    credentials: true,
+  origin: 'https://crm.elgatoconbolsas.es',
+  credentials: true,
   })
-);
+  );
+  } else {
+  app.use(
+  cors({
+  origin: true,
+  credentials: true,
+  })
+  );
+  }
 
 app.use(cookieParser());
 app.use(express.json());
