@@ -1,7 +1,5 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const Joi = require('joi');
-
 const mongoose = require('mongoose');
 
 const checkAndCorrectURL = require('./checkAndCorrectURL');
@@ -35,7 +33,6 @@ const login = async (req, res, { userModel }) => {
 
   const user = await User.findOne({ email: email, removed: false });
 
-  // console.log(user);
   if (!user)
     return res.status(404).json({
       success: false,
@@ -67,50 +64,25 @@ const login = async (req, res, { userModel }) => {
     return res.status(403).json({
       success: false,
       result: null,
-      message: 'your email account is not verified , check your email inbox',
+      message: 'Your email account is not verified, check your email inbox',
     });
   }
 
-  const token = jwt.sign(
-    {
-      id: user._id,
+  // Token Generation Removed
+
+  // Update the response to remove token cookie
+  res.status(200).json({
+    success: true,
+    result: {
+      _id: user._id,
+      name: user.name,
+      surname: user.surname,
+      role: user.role,
+      email: user.email,
+      photo: user.photo,
     },
-    process.env.JWT_SECRET,
-    { expiresIn: req.body.remember ? 365 * 24 + 'h' : '24h' }
-  );
-
-  await UserPassword.findOneAndUpdate(
-    { user: user._id },
-    { $push: { loggedSessions: token } },
-    {
-      new: true,
-    }
-  ).exec();
-
-  res
-    .status(200)
-    .cookie('token', token, {
-      maxAge: req.body.remember ? 365 * 24 * 60 * 60 * 1000 : null,
-      sameSite: 'none',
-      httpOnly: true,
-      secure: false,
-      domain: req.hostname,
-      path: '/',
-      Partitioned: true,
-      withCredentials: true,
-    })
-    .json({
-      success: true,
-      result: {
-        _id: user._id,
-        name: user.name,
-        surname: user.surname,
-        role: user.role,
-        email: user.email,
-        photo: user.photo,
-      },
-      message: 'Successfully login user',
-    });
+    message: 'Successfully login user',
+  });
 };
 
 module.exports = login;
