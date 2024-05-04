@@ -22,6 +22,47 @@ export default function ItemRow({ field, setInputValue, remove, current = null, 
     setPrice(value);
   };
 
+  const handleAutoCompleteChange = async (codigo) => {
+    form.setFieldsValue({ [field.name]: { ...form.getFieldValue(field.name), itemName: codigo } });
+    try {
+      const productos = await fetchProductData(codigo);
+      if (productos) {
+        // Suponiendo que productData contiene los campos 'price' y 'description'
+        setPrice(productos.precio);
+        form.setFieldsValue({ [field.name]: { ...form.getFieldValue(field.name), price: productos.precio } });
+        form.setFieldsValue({ [field.name]: { ...form.getFieldValue(field.name), description: productos.descripcion } });
+      }
+    } catch (error) {
+      console.error("Error al obtener datos del producto: ", error);
+    }
+  };
+  useEffect(() => {
+    if (current) {
+      // When it accesses the /payment/Factura/ endpoint,
+      // it receives an Factura.item instead of just item
+      // and breaks the code, but now we can check if items exists,
+      // and if it doesn't we can access Factura.items.
+
+      const { items, Factura } = current;
+
+      if (Factura) {
+        const item = Factura[field.fieldKey];
+
+        if (item) {
+          setQuantity(item.quantity);
+          setPrice(item.price);
+        }
+      } else {
+        const item = items[field.fieldKey];
+
+        if (item) {
+          setQuantity(item.quantity);
+          setPrice(item.price);
+        }
+      }
+    }
+  }, [current]);
+
   useEffect(() => {
     if (current) {
       const { items, invoice } = current;
@@ -70,17 +111,13 @@ export default function ItemRow({ field, setInputValue, remove, current = null, 
           name={[field.name, 'itemName']}
           rules={[{ required: true }]}
         >
- <Input placeholder='código' />
-        </Form.Item>
+        <Input placeholder="Código" />
+     
+   </Form.Item>
       </Col>
       <Col className="gutter-row" span={5}>
         <Form.Item name={[field.name, 'description']}>
-          <Input
-            key={description}
-            placeholder="Descripción"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
+        <Input placeholder="Descripción" />
         </Form.Item>
       </Col>
       <Col className="gutter-row" span={3}>

@@ -12,8 +12,8 @@ const schema = Joi.object({
     .items(
       Joi.object({
         _id: Joi.string().allow('').optional(),
-        itemName: Joi.string().required(),
-        description: Joi.string().allow(''),
+        itemName: Joi.alternatives().try(Joi.string(), Joi.object()).required(),
+        description: Joi.alternatives().try(Joi.string(), Joi.object()).required(),
         quantity: Joi.number().required(),
         price: Joi.number().required(),
         total: Joi.number().required(),

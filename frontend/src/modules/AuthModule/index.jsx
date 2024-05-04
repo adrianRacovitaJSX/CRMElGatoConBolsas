@@ -6,7 +6,7 @@ import AuthLayout from '@/layout/AuthLayout';
 import SideContent from './SideContent';
 import SelectLanguage from '@/components/SelectLanguage';
 
-import logo from '@/style/images/idurar-crm-erp.svg';
+import logo from '@/style/images/logo.png';
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -38,8 +38,8 @@ const AuthModule = ({ authContent, AUTH_TITLE }) => {
               margin: '-70px auto 40px',
               display: 'block',
             }}
-            height={63}
-            width={220}
+            height={103}
+            width={420}
           />
           <div className="space10" />
         </Col>

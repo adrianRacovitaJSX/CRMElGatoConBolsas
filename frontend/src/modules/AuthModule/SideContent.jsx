@@ -1,6 +1,7 @@
-import { Space, Layout, Divider, Typography } from 'antd';
-import logo from '@/style/images/idurar-crm-erp.svg';
+import { Space, Layout, Divider, Typography, Image } from 'antd';
+import logo from '@/style/images/logo.png';
 import useLanguage from '@/locale/useLanguage';
+import './styles/styles.css';
 
 const { Content } = Layout;
 const { Title, Text } = Typography;
@@ -18,14 +19,12 @@ export default function SideContent() {
       className="sideContent"
     >
       <div style={{ width: '100%' }}>
-        <img
-          src={logo}
-          alt="IDURAR ERP CRM"
-          style={{ margin: '0 auto 40px', display: 'block' }}
-          height={63}
-          width={220}
-        />
-        <div className="space40"></div>
+      <Image
+    src={logo}
+    alt="Logo"
+    preview={false} // if you don't want the image to be previewed in a modal
+    className="logo-image"
+  />
         <Title level={3}>{translate('Manage your company with')} :</Title>
         <div className="space20"></div>
         <ul className="list-checked">

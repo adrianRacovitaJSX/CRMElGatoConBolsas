@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import lang from '@/locale/translation/en_us';
+import lang from '@/locale/translation/es_es';
 
 import rootReducer from './rootReducer';
 import storePersist, { localStorageHealthCheck } from './storePersist';
@@ -9,7 +9,7 @@ localStorageHealthCheck();
 
 const LANG_INITIAL_STATE = {
   result: lang,
-  langCode: 'en_us',
+  langCode: 'es_es',
   isLoading: false,
   isSuccess: false,
 };
