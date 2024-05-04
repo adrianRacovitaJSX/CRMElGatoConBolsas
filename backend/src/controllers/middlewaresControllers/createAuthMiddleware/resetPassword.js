@@ -88,6 +88,7 @@ const resetPassword = async (req, res, { userModel }) => {
       path: '/',
       Partitioned: true,
       withCredentials: true,
+
     })
     .json({
       success: true,

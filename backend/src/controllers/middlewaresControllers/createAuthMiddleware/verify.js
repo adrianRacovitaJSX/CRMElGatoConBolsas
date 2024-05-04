@@ -1,4 +1,7 @@
+const jwt = require('jsonwebtoken');
+
 const mongoose = require('mongoose');
+
 const shortid = require('shortid');
 
 const login = async (req, res, { userModel }) => {
@@ -27,21 +30,55 @@ const login = async (req, res, { userModel }) => {
       message: 'Invalid verify token',
     });
 
-  // Remove JWT token generation
-
-  // Update the response to remove token cookie
-  res.status(200).json({
-    success: true,
-    result: {
-      _id: user._id,
-      name: user.name,
-      surname: user.surname,
-      role: user.role,
-      email: user.email,
-      photo: user.photo,
+  const token = jwt.sign(
+    {
+      id: userId,
     },
-    message: 'Email verified successfully',
-  });
+    process.env.JWT_SECRET,
+    { expiresIn: '24h' }
+  );
+
+  await UserPassword.findOneAndUpdate(
+    { user: userId },
+    { $push: { loggedSessions: token }, emailToken: shortid.generate(), emailVerified: true },
+    {
+      new: true,
+    }
+  ).exec();
+
+  const user = await User.findOneAndUpdate(
+    { _id: userId },
+    { enabled: true },
+    {
+      new: true,
+    }
+  ).exec();
+
+  res
+    .status(200)
+    .cookie('token', token, {
+      maxAge: 24 * 60 * 60 * 1000,
+      sameSite: 'none',
+      httpOnly: true,
+      secure: false,
+      domain: req.hostname,
+      path: '/',
+      Partitioned: true,
+            withCredentials: true,
+
+    })
+    .json({
+      success: true,
+      result: {
+        _id: user._id,
+        name: user.name,
+        surname: user.surname,
+        role: user.role,
+        email: user.email,
+        photo: user.photo,
+      },
+      message: 'Successfully login user',
+    });
 };
 
 module.exports = login;

@@ -50,16 +50,15 @@ const register = async (req, res, { userModel }) => {
 
   const salt = uniqueId();
   const hashedPassword = bcrypt.hashSync(salt + password);
+  const emailToken = uniqueId();
 
   const savedUser = await User.create({ email, name });
-
-  const emailToken = uniqueId(); // Adjust email token generation if necessary
 
   const registrationDone = await UserPassword.create({
     user: savedUser._id,
     password: hashedPassword,
     salt: salt,
-    emailToken, // Remove this line if email token is not needed
+    emailToken,
   });
 
   if (!registrationDone) {
@@ -74,8 +73,7 @@ const register = async (req, res, { userModel }) => {
 
   const url = checkAndCorrectURL(idurar_base_url);
 
-  // Adjust email verification link generation
-  const link = url + '/verify/' + savedUser._id; // Remove emailToken from the link
+  const link = url + '/verify/' + savedUser._id + '/' + emailToken;
 
   await sendMail({ email, name, link, idurar_app_email });
   // Email verification logic here

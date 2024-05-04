@@ -20,7 +20,8 @@ const logout = async (req, res, { userModel }) => {
       secure: true,
       domain: req.hostname,
       Path: '/',
-      withCredentials: true,
+            withCredentials: true,
+
     })
     .json({
       success: true,

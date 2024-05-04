@@ -1,17 +1,32 @@
+const jwt = require('jsonwebtoken');
+
 const mongoose = require('mongoose');
 
-const isValidAuthToken = async (req, res, next, { userModel }) => {
+const isValidAuthToken = async (req, res, next, { userModel, jwtSecret = 'JWT_SECRET' }) => {
   try {
     const UserPassword = mongoose.model(userModel + 'Password');
     const User = mongoose.model(userModel);
-    const token = req.cookies.token; // Assuming token is stored in cookies
+    const token = req.cookies.token;
+    if (!token)
+      return res.status(401).json({
+        success: true,
+        result: null,
+        message: 'No authentication token, authorization denied.',
+        jwtExpired: false,
+      });
 
-    // Skip JWT verification step
-    // Instead, you can directly proceed to retrieving user information from the database
-    // For demonstration purposes, assuming user ID is passed directly in the token
-    const userId = token; // Assuming token directly contains user ID
-    const userPromise = User.findOne({ _id: userId, removed: false });
-    const userPasswordPromise = UserPassword.findOne({ user: userId, removed: false });
+    const verified = jwt.verify(token, process.env[jwtSecret]);
+
+    if (!verified)
+      return res.status(401).json({
+        success: false,
+        result: null,
+        message: 'Token verification failed, authorization denied.',
+        jwtExpired: true,
+      });
+
+    const userPasswordPromise = UserPassword.findOne({ user: verified.id, removed: false });
+    const userPromise = User.findOne({ _id: verified.id, removed: false });
 
     const [user, userPassword] = await Promise.all([userPromise, userPasswordPromise]);
 
@@ -19,7 +34,8 @@ const isValidAuthToken = async (req, res, next, { userModel }) => {
       return res.status(401).json({
         success: false,
         result: null,
-        message: "User doesn't exist, authorization denied.",
+        message: "User doens't Exist, authorization denied.",
+        jwtExpired: true,
       });
 
     const { loggedSessions } = userPassword;
@@ -27,7 +43,8 @@ const isValidAuthToken = async (req, res, next, { userModel }) => {
       return res.status(401).json({
         success: false,
         result: null,
-        message: 'User is already logged out, authorization denied.',
+        message: 'User is already logout try to login, authorization denied.',
+        jwtExpired: true,
       });
     else {
       const reqUserName = userModel.toLowerCase();
@@ -40,7 +57,7 @@ const isValidAuthToken = async (req, res, next, { userModel }) => {
       result: null,
       message: error.message,
       error: error,
-      controller: 'isValidAuthToken',
+      conttroller: 'isValidAuthToken',
     });
   }
 };
