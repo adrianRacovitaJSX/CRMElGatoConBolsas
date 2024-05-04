@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   EyeOutlined,
   EditOutlined,
@@ -8,7 +8,7 @@ import {
   PlusOutlined,
   EllipsisOutlined,
 } from '@ant-design/icons';
-import { Dropdown, Table, Button } from 'antd';
+import { Dropdown, Table, Button, Input } from 'antd';
 import { PageHeader } from '@ant-design/pro-layout';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -38,6 +38,7 @@ function AddNewItem({ config }) {
 
 export default function DataTable({ config, extra = [] }) {
   const translate = useLanguage();
+  const { Search } = Input; // Import Search component from Ant Design
   let { entity, dataTableColumns, disableAdd = false } = config;
 
   const { DATATABLE_TITLE } = config;
@@ -69,7 +70,6 @@ export default function DataTable({ config, extra = [] }) {
     {
       type: 'divider',
     },
-
     {
       label: translate('Delete'),
       key: 'delete',
@@ -165,6 +165,21 @@ export default function DataTable({ config, extra = [] }) {
     };
   }, []);
 
+  // State to hold the value of the search input
+  const [searchValue, setSearchValue] = useState('');
+
+  // Function to handle search input change
+  const handleSearch = (e) => {
+    setSearchValue(e.target.value);
+  };
+
+  // Function to filter dataSource based on searchValue
+  const filteredDataSource = dataSource.filter(item => {
+    const clientName = item.client ? item.client.name.toLowerCase() : '';
+    const invoiceNumber = item.number ? item.number.toString() : ''; // Convert invoice number to string for comparison
+    return clientName.includes(searchValue.toLowerCase()) || invoiceNumber.includes(searchValue);
+  });
+
   return (
     <>
       <PageHeader
@@ -179,12 +194,23 @@ export default function DataTable({ config, extra = [] }) {
         style={{
           padding: '20px 0px',
         }}
-      ></PageHeader>
+      >
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <Search
+          placeholder="Busca por cliente o nº de factura"
+          onChange={handleSearch}
+          value={searchValue}
+          style={{ width: '300px', marginBottom: '10px' }}
+        />
+        <span style={{ alignSelf: 'flex-start', fontSize: '12px', color: '#999' }}>Solo busca en la página actual, si necesitas más información aumenta el número de facturas que se muestran a 100, o ve cambiando de página.</span>
+      </div>
+      </PageHeader>
+
 
       <Table
         columns={dataTableColumns}
         rowKey={(item) => item._id}
-        dataSource={dataSource}
+        dataSource={filteredDataSource} // Use filteredDataSource instead of dataSource
         pagination={pagination}
         loading={listIsLoading}
         onChange={handelDataTableLoad}

@@ -8,7 +8,7 @@ const read = async (Model, req, res) => {
     return res.status(404).json({
       success: false,
       result: null,
-      message: 'No document found by this id: ' + req.params.id,
+      message: 'No se ha encontrado el cliente: ' + req.params.id,
     });
   } else {
     // Return success resposne
@@ -18,7 +18,7 @@ const read = async (Model, req, res) => {
     return res.status(200).json({
       success: true,
       result: migratedData,
-      message: 'we found this document by this id: ' + req.params.id,
+      message: 'Encontrado el cliente: ' + req.params.id,
     });
   }
 };

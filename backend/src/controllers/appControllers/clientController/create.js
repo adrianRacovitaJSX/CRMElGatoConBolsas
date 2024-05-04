@@ -10,7 +10,7 @@ const create = async (Model, req, res) => {
     if (!req.body.people) {
       return res.status(403).json({
         success: false,
-        message: 'Please select a people',
+        message: 'Elige a una persona',
       });
     } else {
       let client = await Model.findOne({
@@ -22,7 +22,7 @@ const create = async (Model, req, res) => {
         return res.status(403).json({
           success: false,
           result: null,
-          message: 'Client Already Exist',
+          message: 'El cliente ya existe',
         });
       }
 
@@ -44,7 +44,7 @@ const create = async (Model, req, res) => {
     if (!req.body.company) {
       return res.status(403).json({
         success: false,
-        message: 'Please select a company',
+        message: 'Elige una empresa',
       });
     } else {
       let client = await Model.findOne({
@@ -56,7 +56,7 @@ const create = async (Model, req, res) => {
         return res.status(403).json({
           success: false,
           result: null,
-          message: 'Client Already Exist',
+          message: 'El cliente ya existe',
         });
       }
       let { name } = await Company.findOneAndUpdate(
@@ -82,7 +82,7 @@ const create = async (Model, req, res) => {
   return res.status(200).json({
     success: true,
     result,
-    message: 'Successfully Created the document in Model ',
+    message: 'Se ha creado el documento ',
   });
 };
 

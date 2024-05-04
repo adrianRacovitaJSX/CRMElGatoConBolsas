@@ -106,6 +106,9 @@ const schema = new mongoose.Schema({
   address: {
     type: String,
   },
+  cif: {
+    type: String,
+  },
   city: {
     type: String,
   },

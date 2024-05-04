@@ -13,7 +13,7 @@ const schema = new mongoose.Schema({
   productCategory: {
     type: mongoose.Schema.ObjectId,
     ref: 'ProductCategory',
-    required: true,
+    required: false,
     autopopulate: true,
   },
   suppliers: [{ type: mongoose.Schema.ObjectId, ref: 'Supplier' }],
@@ -22,10 +22,7 @@ const schema = new mongoose.Schema({
     required: true,
   },
   description: String,
-  number: {
-    type: Number,
-    unique: true,
-  },
+  
   title: String,
   tags: [String],
   headerImage: String,

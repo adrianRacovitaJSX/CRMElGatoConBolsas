@@ -35,5 +35,5 @@ for (const filePath of modelsFiles) {
 const app = require('./app');
 app.set('port', process.env.PORT || 8888);
 const server = app.listen(app.get('port'), () => {
-  console.log(`Express running → On PORT : ${server.address().port}`);
+  console.log(`Express funcionando → PUERTO : ${server.address().port}`);
 });

@@ -20,7 +20,7 @@ const remove = async (req, res) => {
     return res.status(404).json({
       success: false,
       result: null,
-      message: 'Invoice not found',
+      message: 'Factura no encontrada',
     });
   }
   const paymentsInvoices = await ModalPayment.updateMany(
@@ -30,7 +30,7 @@ const remove = async (req, res) => {
   return res.status(200).json({
     success: true,
     result: deletedInvoice,
-    message: 'Invoice deleted successfully',
+    message: 'Factura eliminada',
   });
 };
 

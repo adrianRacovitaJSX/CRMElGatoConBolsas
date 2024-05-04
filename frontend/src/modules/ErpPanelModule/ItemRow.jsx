@@ -1,78 +1,86 @@
-import { useState, useEffect } from 'react';
-import { Form, Input, InputNumber, Row, Col } from 'antd';
-
+import React, { useState, useEffect, useRef } from 'react'; // Asegúrate de importar React
+import { Form, Input, InputNumber, Row, Col, } from 'antd';
+import AutoCompleteAsync from '@/components/AutoCompleteAsync';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useMoney, useDate } from '@/settings';
 import calculate from '@/utils/calculate';
 
-export default function ItemRow({ field, remove, current = null }) {
+export default function ItemRow({ field, setInputValue, remove, current = null, form }) {
+
   const [totalState, setTotal] = useState(undefined);
   const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(0);
+  const [description, setDescription] = useState('');
 
   const money = useMoney();
+  
   const updateQt = (value) => {
     setQuantity(value);
   };
+
   const updatePrice = (value) => {
     setPrice(value);
   };
 
   useEffect(() => {
     if (current) {
-      // When it accesses the /payment/ endpoint,
-      // it receives an invoice.item instead of just item
-      // and breaks the code, but now we can check if items exists,
-      // and if it doesn't we can access invoice.items.
-
       const { items, invoice } = current;
-
-      if (invoice) {
-        const item = invoice[field.fieldKey];
-
-        if (item) {
-          setQuantity(item.quantity);
-          setPrice(item.price);
-        }
-      } else {
-        const item = items[field.fieldKey];
-
-        if (item) {
-          setQuantity(item.quantity);
-          setPrice(item.price);
-        }
+      const item = invoice ? invoice[field.fieldKey] : items[field.fieldKey];
+      if (item) {
+        setQuantity(item.quantity);
+        setPrice(item.price);
       }
     }
   }, [current]);
 
   useEffect(() => {
     const currentTotal = calculate.multiply(price, quantity);
-
     setTotal(currentTotal);
   }, [price, quantity]);
 
+  const handleSelectProduct = (value) => {
+    const selectedDescription = value.description;
+    const selectedPrice = value.price;
+    console.log("Description:", selectedDescription);
+    console.log("Price:", selectedPrice);
+    setDescription(selectedDescription);
+    setPrice(selectedPrice);
+
+    // Update the input values using setFieldsValue
+    form.setFieldsValue({
+      [field.name]: {
+        description: selectedDescription,
+        price: selectedPrice,
+      },
+    });
+
+    // Call the prop to update parent state
+    if (setInputValue) {
+      setInputValue('description', selectedDescription);
+      setInputValue('price', selectedPrice);
+    } else {
+      console.error('setInputValue prop not received in ItemRow');
+    }
+  };
+
   return (
     <Row gutter={[12, 12]} style={{ position: 'relative' }}>
-      <Col className="gutter-row" span={5}>
+      <Col className="gutter-row" span={4}>
         <Form.Item
           name={[field.name, 'itemName']}
-          rules={[
-            {
-              required: true,
-              message: 'Missing itemName name',
-            },
-            {
-              pattern: /^(?!\s*$)[\s\S]+$/, // Regular expression to allow spaces, alphanumeric, and special characters, but not just spaces
-              message: 'Item Name must contain alphanumeric or special characters',
-            },
-          ]}
+          rules={[{ required: true }]}
         >
-          <Input placeholder="Item Name" />
+ <Input placeholder='código' />
         </Form.Item>
       </Col>
-      <Col className="gutter-row" span={7}>
+      <Col className="gutter-row" span={5}>
         <Form.Item name={[field.name, 'description']}>
-          <Input placeholder="description Name" />
+          <Input
+            key={description}
+            placeholder="Descripción"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
         </Form.Item>
       </Col>
       <Col className="gutter-row" span={3}>
@@ -80,9 +88,10 @@ export default function ItemRow({ field, remove, current = null }) {
           <InputNumber style={{ width: '100%' }} min={0} onChange={updateQt} />
         </Form.Item>
       </Col>
-      <Col className="gutter-row" span={4}>
+      <Col className="gutter-row" span={6}>
         <Form.Item name={[field.name, 'price']} rules={[{ required: true }]}>
           <InputNumber
+value={price}
             className="moneyInput"
             onChange={updatePrice}
             min={0}
@@ -92,7 +101,7 @@ export default function ItemRow({ field, remove, current = null }) {
           />
         </Form.Item>
       </Col>
-      <Col className="gutter-row" span={5}>
+      <Col className="gutter-row" span={6}>
         <Form.Item name={[field.name, 'total']}>
           <Form.Item>
             <InputNumber
@@ -108,8 +117,7 @@ export default function ItemRow({ field, remove, current = null }) {
           </Form.Item>
         </Form.Item>
       </Col>
-
-      <div style={{ position: 'absolute', right: '-20px', top: ' 5px' }}>
+      <div style={{ position: 'absolute', right: '-12px', top: ' 5px' }}>
         <DeleteOutlined onClick={() => remove(field.name)} />
       </div>
     </Row>

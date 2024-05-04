@@ -117,7 +117,7 @@ export default function DashboardModule() {
   const statisticCards = entityData.map((data, index) => {
     const { result, entity, isLoading, title } = data;
 
-    if (entity === 'payment') return null;
+    if (entity === 'offer' || entity === 'payment') return null;
 
     return (
       <PreviewCard
@@ -142,7 +142,7 @@ export default function DashboardModule() {
       <Row gutter={[32, 32]}>
         {cards}
         <SummaryCard
-          title={translate('Due Balance')}
+          title="Facturas pendientes"
           tagColor={'red'}
           prefix={translate('Not Paid')}
           isLoading={invoiceLoading}
@@ -153,8 +153,8 @@ export default function DashboardModule() {
       <Row gutter={[32, 32]}>
         <Col className="gutter-row w-full" sm={{ span: 24 }} md={{ span: 24 }} lg={{ span: 18 }}>
           <div className="whiteBox shadow" style={{ height: 458 }}>
-            <Row className="pad20" gutter={[0, 0]}>
-              {statisticCards}
+          <Row className="pad20" gutter={[0, 0]} style={{ width: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'nowrap' }}>
+            {statisticCards}            
             </Row>
           </div>
         </Col>
@@ -169,7 +169,7 @@ export default function DashboardModule() {
       <div className="space30"></div>
       <Row gutter={[32, 32]}>
         <Col className="gutter-row w-full" sm={{ span: 24 }} lg={{ span: 12 }}>
-          <div className="whiteBox shadow pad20" style={{ height: '100%' }}>
+          <div className="whiteBox shadow pad15" style={{ height: '100%' }}>
             <h3 style={{ color: '#22075e', marginBottom: 5, padding: '0 20px 20px' }}>
               {translate('Recent Invoices')}
             </h3>
@@ -179,7 +179,7 @@ export default function DashboardModule() {
         </Col>
 
         <Col className="gutter-row w-full" sm={{ span: 24 }} lg={{ span: 12 }}>
-          <div className="whiteBox shadow pad20" style={{ height: '100%' }}>
+          <div className="whiteBox shadow pad15" style={{ height: '100%' }}>
             <h3 style={{ color: '#22075e', marginBottom: 5, padding: '0 20px 20px' }}>
               {translate('Recent Quotes')}
             </h3>
@@ -187,6 +187,7 @@ export default function DashboardModule() {
           </div>
         </Col>
       </Row>
+
     </>
   );
 }

@@ -139,6 +139,18 @@ const invoiceSchema = new mongoose.Schema({
   note: {
     type: String,
   },
+  recargo: {
+    type: Number,
+    default: 0,
+  },
+  recargoTotal: {
+    type: Number,
+    default: 0,
+  },
+  recargoValue: {
+    type: Number,
+    default: 0,
+  },
   status: {
     type: String,
     enum: ['draft', 'pending', 'sent', 'refunded', 'cancelled', 'on hold'],

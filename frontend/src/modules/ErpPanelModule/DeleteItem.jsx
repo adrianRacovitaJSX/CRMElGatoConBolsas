@@ -11,8 +11,8 @@ export default function Delete({ config }) {
   let {
     entity,
     deleteModalLabels,
-    deleteMessage = 'Do you want delete : ',
-    modalTitle = 'Remove Item',
+    deleteMessage = 'Vas a eliminar: ',
+    modalTitle = '¿Estás seguro?',
   } = config;
   const dispatch = useDispatch();
   const { current, isLoading, isSuccess } = useSelector(selectDeletedItem);

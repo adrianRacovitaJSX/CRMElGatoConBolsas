@@ -8,7 +8,7 @@ const search = async (Model, req, res) => {
       .json({
         success: false,
         result: [],
-        message: 'No document found by this request',
+        message: 'No se ha encontrado documento',
       })
       .end();
   }

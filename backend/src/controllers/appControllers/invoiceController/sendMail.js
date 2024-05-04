@@ -47,7 +47,7 @@ const mail = async (req, res) => {
             return res.status(200).json({
               success: true,
               result: mailId,
-              message: `Successfully sent invoice ${id} to ${email}`,
+              message: `Envidada la factura ${id} a ${email}`,
             });
           });
       }
@@ -67,10 +67,10 @@ const sendViaApi = async (email, name, filePath) => {
   const { data } = await resend.emails.send({
     from: idurar_app_email,
     to: email,
-    subject: 'Invoice From Idurar',
+    subject: 'Factura - Iván Moreno Osma',
     attachments: [
       {
-        filename: 'Invoice.pdf',
+        filename: 'Factura - Iván Moreno Osma.pdf',
         content: attatchedFile,
       },
     ],

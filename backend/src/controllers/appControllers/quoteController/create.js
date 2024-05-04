@@ -52,7 +52,7 @@ const create = async (req, res) => {
   return res.status(200).json({
     success: true,
     result: updateResult,
-    message: 'Quote created successfully',
+    message: 'Albarán creado',
   });
 };
 module.exports = create;

@@ -80,34 +80,45 @@ export default function AutoCompleteAsync({
       }
     }
   }, [isSuccess, result]);
+  
   useEffect(() => {
-    // this for update Form , it's for setField
     if (value && isUpdating.current) {
       if (!isSearching.current) {
-        setOptions([value]);
+        // Evitar duplicados al actualizar las opciones
+        setOptions(prevOptions => {
+          const uniqueOptions = prevOptions.filter(option => option[outputValue] !== value[outputValue]);
+          return [...uniqueOptions, value];
+        });
       }
       setCurrentValue(value[outputValue] || value); // set nested value or value
-      onChange(value[outputValue] || value);
+      // Pasar el objeto del producto seleccionado, incluyendo la descripción
+      onChange(value);
       isUpdating.current = false;
     }
   }, [value]);
+  
 
   return (
     <Select
       loading={isLoading}
       showSearch
       allowClear
-      placeholder={'Search Here'}
+      placeholder={'Busca aquí'}
       defaultActiveFirstOption={false}
       filterOption={false}
-      notFoundContent={searching ? '... Searching' : <Empty />}
+      notFoundContent={searching ? '... Buscando' : <Empty />}
       value={currentValue}
       onSearch={onSearch}
       onChange={(newValue) => {
         if (onChange) {
-          if (newValue) onChange(newValue[outputValue] || newValue);
+          // Encuentra el producto seleccionado en las opciones
+          const selectedProduct = selectOptions.find(option => option[outputValue] === newValue);
+          if (selectedProduct) {
+            // Pasa todo el objeto del producto seleccionado a la función onChange
+            onChange(selectedProduct);
+          }
         }
-      }}
+      }}      
       onClear={() => {
         setOptions([]);
         setCurrentValue(undefined);

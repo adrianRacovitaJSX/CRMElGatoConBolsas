@@ -11,7 +11,7 @@ export default function AppSettingForm() {
     }
     const isLt2M = file.size / 1024 / 1024 < 5;
     if (!isLt2M) {
-      message.error('Image must smaller than 5MB!');
+      message.error('La imagen debe pesar menos de 5MB!');
     }
     return false;
   };

@@ -1,6 +1,6 @@
 import { lazy, Suspense } from 'react';
-
 import { useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
 import { selectAuth } from '@/redux/auth/selectors';
 import { AppContextProvider } from '@/context/appContext';
 import PageLoader from '@/components/PageLoader';
@@ -19,12 +19,24 @@ const DefaultApp = () => (
   </Localization>
 );
 
-export default function IdurarOs() {
-  const { isLoggedIn } = useSelector(selectAuth);
+// Selector original
+const selectAuthData = state => state.auth;
 
-  console.log(
-    '🚀 Welcome to IDURAR ERP CRM! Did you know that we also offer commercial customization services? Contact us at hello@idurarapp.com for more information.'
-  );
+// Selector refactorizado
+const selectModifiedAuth = createSelector(
+  [selectAuthData],
+  auth => {
+    // Realiza alguna transformación o cálculo en los datos de auth seleccionados
+    // Por ejemplo, podrías agregar alguna propiedad adicional o filtrar los datos de alguna manera
+    return {
+      ...auth,
+      // Realiza alguna transformación en los datos de auth si es necesario
+    };
+  }
+);
+
+export default function IdurarOs() {
+  const { isLoggedIn } = useSelector(selectModifiedAuth);
 
   if (!isLoggedIn)
     return (

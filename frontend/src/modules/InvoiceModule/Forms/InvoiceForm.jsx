@@ -1,20 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import dayjs from 'dayjs';
 import { Form, Input, InputNumber, Button, Select, Divider, Row, Col } from 'antd';
-
 import { PlusOutlined } from '@ant-design/icons';
-
 import { DatePicker } from 'antd';
-
 import AutoCompleteAsync from '@/components/AutoCompleteAsync';
-
 import ItemRow from '@/modules/ErpPanelModule/ItemRow';
-
 import MoneyInputFormItem from '@/components/MoneyInputFormItem';
 import { selectFinanceSettings } from '@/redux/settings/selectors';
 import { useDate } from '@/settings';
 import useLanguage from '@/locale/useLanguage';
-
 import calculate from '@/utils/calculate';
 import { useSelector } from 'react-redux';
 import SelectAsync from '@/components/SelectAsync';
@@ -22,9 +16,9 @@ import SelectAsync from '@/components/SelectAsync';
 export default function InvoiceForm({ subTotal = 0, current = null }) {
   const { last_invoice_number } = useSelector(selectFinanceSettings);
 
-  if (!last_invoice_number) {
-    return <></>;
-  }
+   // if (!last_invoice_number) {
+  //   return <></>;
+  // }
 
   return <LoadInvoiceForm subTotal={subTotal} current={current} />;
 }
@@ -36,26 +30,43 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
   const [total, setTotal] = useState(0);
   const [taxRate, setTaxRate] = useState(0);
   const [taxTotal, setTaxTotal] = useState(0);
+  const [recargo, setRecargo] = useState(0); // Default recargo is set to 0
+  const [recargoTotal, setRecargoTotal] = useState(0);
   const [currentYear, setCurrentYear] = useState(() => new Date().getFullYear());
   const [lastNumber, setLastNumber] = useState(() => last_invoice_number + 1);
+  const [formData, setFormData] = useState({ description: '' }); // Add initial description property
+  const [form] = Form.useForm();
+  const handleSetInputValue = (field, value) => {
+    setFormData({ ...formData, [field]: value }); // Update state
+  };
 
   const handelTaxChange = (value) => {
-    setTaxRate(value / 100);
+    setTaxRate(value / 1);
+  };
+
+  const recargoChange = (value) => {
+    setRecargo(value / 1);
   };
 
   useEffect(() => {
-    if (current) {
-      const { taxRate = 0, year, number } = current;
-      setTaxRate(taxRate / 100);
-      setCurrentYear(year);
-      setLastNumber(number);
-    }
-  }, [current]);
-  useEffect(() => {
-    const currentTotal = calculate.add(calculate.multiply(subTotal, taxRate), subTotal);
-    setTaxTotal(Number.parseFloat(calculate.multiply(subTotal, taxRate)));
-    setTotal(Number.parseFloat(currentTotal));
-  }, [subTotal, taxRate]);
+
+    // Calculate tax based on selected taxRate
+    const taxValue = calculate.multiply(subTotal, taxRate) / 100;
+
+    // Calculate recargo based on selected recargo rate
+    const recargoValue = calculate.multiply(subTotal, recargo) / 100;
+
+    // Calculate total: subTotal + tax + recargo
+    const currentTotal = calculate.add(subTotal, taxValue);
+
+    // Update state variables
+    setTaxTotal(taxValue);
+    setRecargoTotal(recargoValue);
+
+    // Calculate total with recargo and update state
+    const total = calculate.add(currentTotal, recargoValue) / 1;
+    setTotal(total);
+  }, [subTotal, taxRate, recargo]);
 
   const addField = useRef(false);
 
@@ -150,7 +161,7 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
         <Col className="gutter-row" span={7}>
           <Form.Item
             name="expiredDate"
-            label={translate('Expire Date')}
+            label="Vencimiento"
             rules={[
               {
                 required: true,
@@ -165,27 +176,34 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
       </Row>
       <Divider dashed />
       <Row gutter={[12, 12]} style={{ position: 'relative' }}>
-        <Col className="gutter-row" span={5}>
-          <p>{translate('Item')}</p>
+        <Col className="gutter-row mobile-full-width" span={4}>
+          <p>Código</p>
         </Col>
-        <Col className="gutter-row" span={7}>
-          <p>{translate('Description')}</p>
+        <Col className="gutter-row mobile-full-width" span={5}>
+          <p>Descripción</p>
         </Col>
-        <Col className="gutter-row" span={3}>
-          <p>{translate('Quantity')}</p>{' '}
+        <Col className="gutter-row mobile-full-width" span={3}>
+          <p>Cant.</p>
         </Col>
-        <Col className="gutter-row" span={4}>
-          <p>{translate('Price')}</p>
+        <Col className="gutter-row mobile-full-width" span={6}>
+          <p>Precio</p>
         </Col>
-        <Col className="gutter-row" span={5}>
-          <p>{translate('Total')}</p>
+        <Col className="gutter-row mobile-full-width" span={6}>
+          <p>Total</p>
         </Col>
       </Row>
-      <Form.List name="items">
+      <Form.List form={form} name="items">
         {(fields, { add, remove }) => (
           <>
             {fields.map((field) => (
-              <ItemRow key={field.key} remove={remove} field={field} current={current}></ItemRow>
+             <ItemRow
+                setInputValue={handleSetInputValue} // Pass the prop here
+                key={field.key}
+                remove={remove}
+                field={field}
+                current={current}
+                form={form} // Pass the form prop here
+              />
             ))}
             <Form.Item>
               <Button
@@ -195,7 +213,7 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
                 icon={<PlusOutlined />}
                 ref={addField}
               >
-                {translate('Add field')}
+                Añadir producto
               </Button>
             </Form.Item>
           </>
@@ -203,15 +221,24 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
       </Form.List>
       <Divider dashed />
       <div style={{ position: 'relative', width: ' 100%', float: 'right' }}>
-        <Row gutter={[12, -5]}>
-          <Col className="gutter-row" span={5}>
+        <Row gutter={[2, -5]}>
+          <Col className="gutter-row"
+          span={10}>
             <Form.Item>
               <Button type="primary" htmlType="submit" icon={<PlusOutlined />} block>
                 {translate('Save')}
               </Button>
             </Form.Item>
           </Col>
-          <Col className="gutter-row" span={4} offset={10}>
+          <Col className="gutter-row"
+             md={{
+              span: 3,
+              offset: 15,
+            }}
+            xs={{
+              span: 7,
+              offset: 11,
+              }}>
             <p
               style={{
                 paddingLeft: '12px',
@@ -221,12 +248,21 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
               {translate('Sub Total')} :
             </p>
           </Col>
-          <Col className="gutter-row" span={5}>
+          <Col className="gutter-row" span={6}>
             <MoneyInputFormItem readOnly value={subTotal} />
           </Col>
         </Row>
         <Row gutter={[12, -5]}>
-          <Col className="gutter-row" span={4} offset={15}>
+          <Col className="gutter-row"
+          md={{
+            span:3,
+            offset: 15,
+          }}
+          xs={{
+            span: 7,
+            offset: 11,
+            }}
+            style={{textAlign: 'center'}}>
             <Form.Item
               name="taxRate"
               rules={[
@@ -247,22 +283,72 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
               />
             </Form.Item>
           </Col>
-          <Col className="gutter-row" span={5}>
+          <Col className="gutter-row" span={6}>
             <MoneyInputFormItem readOnly value={taxTotal} />
           </Col>
         </Row>
         <Row gutter={[12, -5]}>
-          <Col className="gutter-row" span={4} offset={15}>
+          <Col className="gutter-row" 
+            span={3} 
+            offset={15}
+            style={{
+              verticalAlign: 'middle',
+            }}
+          >
+            <Form.Item
+              name="recargo"
+              rules={[
+                {
+                  required: false,
+                  message: 'Introduzca recargo.',
+                },
+              ]}
+              initialValue="¿Recargo?"
+            >
+              <Select
+                value={recargo}
+                onChange={recargoChange}
+                bordered={false}
+                options={[
+                  { value: 0, label: 'Sin recargo' },
+                  { value: 5.2, label: '5.2%' }, // recargo value is 5.2%
+                ]}
+                style={{
+                  textSizeAdjust: '10px',
+                }}
+              ></Select>
+
+            </Form.Item> 
+          </Col>
+          <Col className="gutter-row" span={6}>
+            <MoneyInputFormItem readOnly value={recargoTotal} />
+          </Col>
+        </Row>
+        <Row gutter={[12, -5]}>
+          <Col className="gutter-row" 
+          md={{
+            span: 2,
+            offset: 16,
+          }}
+          xs={{
+            span: 5,
+            offset: 13,
+            }}
+            style={{
+              verticalAlign: 'middle',
+            }}
+            >
             <p
               style={{
                 paddingLeft: '12px',
                 paddingTop: '5px',
+                verticalAlign: 'middle',
               }}
             >
               {translate('Total')} :
             </p>
           </Col>
-          <Col className="gutter-row" span={5}>
+          <Col className="gutter-row" span={6}>
             <MoneyInputFormItem readOnly value={total} />
           </Col>
         </Row>

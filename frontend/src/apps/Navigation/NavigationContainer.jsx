@@ -6,7 +6,7 @@ import { useAppContext } from '@/context/appContext';
 
 import useLanguage from '@/locale/useLanguage';
 import logoIcon from '@/style/images/logo-icon.png';
-import logoText from '@/style/images/logo-text.png';
+import logoText from '@/style/images/logo.png';
 import { useNavigate } from 'react-router-dom';
 import useResponsive from '@/hooks/useResponsive';
 
@@ -56,17 +56,12 @@ function Sidebar({ collapsible, isMobile = false }) {
     {
       key: 'customer',
       icon: <CustomerServiceOutlined />,
-      label: <Link to={'/customer'}>{translate('customer')}</Link>,
-    },
-    {
-      key: 'people',
-      icon: <UserOutlined />,
-      label: <Link to={'/people'}>{translate('people')}</Link>,
+      label: <Link to={'/customer'}>Clientes</Link>,
     },
     {
       key: 'company',
       icon: <ShopOutlined />,
-      label: <Link to={'/company'}>{translate('company')}</Link>,
+      label: <Link to={'/company'}>Empresas</Link>,
     },
 
     // { key: 'order', icon: <ShopOutlined />, label: <Link to={'/'}>Lead</Link> Order },
@@ -85,7 +80,7 @@ function Sidebar({ collapsible, isMobile = false }) {
     {
       key: 'payment',
       icon: <CreditCardOutlined />,
-      label: <Link to={'/payment'}>{translate('payment')}</Link>,
+      label: <Link to={'/payment'}>Pagos</Link>,
     },
     {
       key: 'expenses',
@@ -192,15 +187,9 @@ function Sidebar({ collapsible, isMobile = false }) {
       theme={'light'}
     >
       <div className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-        <img src={logoIcon} alt="Logo" style={{ marginLeft: '-5px', height: '40px' }} />
+        <img src={logoText} alt="Logo" style={{ marginLeft: '', height: '58px' }} />
 
-        {!showLogoApp && (
-          <img
-            src={logoText}
-            alt=""
-            style={{ marginTop: '3px', marginLeft: '10px', height: '38px' }}
-          />
-        )}
+     
       </div>
       <Menu
         items={items}

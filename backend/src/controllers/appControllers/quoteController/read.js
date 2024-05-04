@@ -12,14 +12,14 @@ const read = async (req, res) => {
     return res.status(404).json({
       success: false,
       result: null,
-      message: 'No document found by this id: ' + req.params.id,
+      message: 'No se ha encontrado el albarán con el id: ' + req.params.id,
     });
   } else {
     // Return success resposne
     return res.status(200).json({
       success: true,
       result,
-      message: 'we found this document by this id: ' + req.params.id,
+      message: 'Encontrado albarán con id: ' + req.params.id,
     });
   }
 };

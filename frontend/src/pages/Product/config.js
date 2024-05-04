@@ -9,7 +9,7 @@ export const fields = {
     displayLabels: ['productCategory', 'name'],
     dataIndex: ['productCategory', 'name'],
     entity: 'productcategory',
-    required: true,
+    required: false,
   },
   price: {
     type: 'currency',
@@ -17,8 +17,5 @@ export const fields = {
   },
   description: {
     type: 'textarea',
-  },
-  ref: {
-    type: 'string',
   },
 };

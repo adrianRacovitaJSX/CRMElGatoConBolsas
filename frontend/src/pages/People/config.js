@@ -15,6 +15,9 @@ export const fields = {
     searchFields: 'name',
     dataIndex: ['company', 'name'],
   },
+  address: {
+    type: 'string',
+  },
   country: {
     type: 'country',
   },

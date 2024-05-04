@@ -13,7 +13,7 @@ const convertQuoteToInvoice = async (req, res) => {
     return res.status(404).json({
       success: false,
       result: null,
-      message: 'Quote not found',
+      message: 'Albarán no encontrado',
     });
   }
 
@@ -22,7 +22,7 @@ const convertQuoteToInvoice = async (req, res) => {
     return res.status(409).json({
       success: false,
       result: null,
-      message: 'Quote is already converted to an invoice.',
+      message: 'El albarán ya es una factura.',
     });
   }
 
@@ -64,7 +64,7 @@ const convertQuoteToInvoice = async (req, res) => {
   return res.status(200).json({
     success: true,
     result: quote,
-    message: 'Successfully converted quote to invoice',
+    message: 'Convertido a factura',
   });
 };
 

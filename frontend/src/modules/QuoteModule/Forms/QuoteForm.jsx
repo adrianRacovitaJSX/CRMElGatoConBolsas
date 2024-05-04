@@ -22,10 +22,9 @@ import SelectAsync from '@/components/SelectAsync';
 export default function QuoteForm({ subTotal = 0, current = null }) {
   const { last_quote_number } = useSelector(selectFinanceSettings);
 
-  if (!last_quote_number) {
-    return <></>;
-  }
-
+ //if (!last_quote_number) {
+ //return <></>;
+ //}
   return <LoadQuoteForm subTotal={subTotal} current={current} />;
 }
 
@@ -156,7 +155,7 @@ function LoadQuoteForm({ subTotal = 0, current = null }) {
         <Col className="gutter-row" span={7}>
           <Form.Item
             name="expiredDate"
-            label={translate('Expire Date')}
+            label="Vencimiento"
             rules={[
               {
                 required: true,
@@ -171,22 +170,22 @@ function LoadQuoteForm({ subTotal = 0, current = null }) {
       </Row>
       <Divider dashed />
       <Row gutter={[12, 12]} style={{ position: 'relative' }}>
-        <Col className="gutter-row" span={5}>
-          <p>{translate('Item')}</p>
-        </Col>
-        <Col className="gutter-row" span={7}>
-          <p>{translate('Description')}</p>
-        </Col>
-        <Col className="gutter-row" span={3}>
-          <p>{translate('Quantity')}</p>{' '}
-        </Col>
-        <Col className="gutter-row" span={4}>
-          <p>{translate('Price')}</p>
-        </Col>
-        <Col className="gutter-row" span={5}>
-          <p>{translate('Total')}</p>
-        </Col>
-      </Row>
+    <Col className="gutter-row mobile-full-width" span={4}>
+    <p>Código</p>
+    </Col>
+    <Col className="gutter-row mobile-full-width" span={5}>
+      <p>Descripción</p>
+    </Col>
+    <Col className="gutter-row mobile-full-width" span={3}>
+      <p>Cant.</p>
+    </Col>
+    <Col className="gutter-row mobile-full-width" span={6}>
+      <p>Precio</p>
+    </Col>
+    <Col className="gutter-row mobile-full-width" span={6}>
+      <p>Total</p>
+    </Col>
+  </Row>
       <Form.List name="items">
         {(fields, { add, remove }) => (
           <>
@@ -209,15 +208,24 @@ function LoadQuoteForm({ subTotal = 0, current = null }) {
       </Form.List>
       <Divider dashed />
       <div style={{ position: 'relative', width: ' 100%', float: 'right' }}>
-        <Row gutter={[12, -5]}>
-          <Col className="gutter-row" span={5}>
+        <Row gutter={[2, -5]}>
+          <Col className="gutter-row"
+          span={10}>
             <Form.Item>
               <Button type="primary" htmlType="submit" icon={<PlusOutlined />} block>
                 {translate('Save')}
               </Button>
             </Form.Item>
           </Col>
-          <Col className="gutter-row" span={4} offset={10}>
+          <Col className="gutter-row"
+             md={{
+              span: 3,
+              offset: 15,
+            }}
+            xs={{
+              span: 7,
+              offset: 11,
+              }}>
             <p
               style={{
                 paddingLeft: '12px',
@@ -227,12 +235,21 @@ function LoadQuoteForm({ subTotal = 0, current = null }) {
               {translate('Sub Total')} :
             </p>
           </Col>
-          <Col className="gutter-row" span={5}>
+          <Col className="gutter-row" span={6}>
             <MoneyInputFormItem readOnly value={subTotal} />
           </Col>
         </Row>
         <Row gutter={[12, -5]}>
-          <Col className="gutter-row" span={4} offset={15}>
+          <Col className="gutter-row"
+          md={{
+            span:3,
+            offset: 15,
+          }}
+          xs={{
+            span: 7,
+            offset: 11,
+            }}
+            style={{textAlign: 'center'}}>
             <Form.Item
               name="taxRate"
               rules={[
@@ -253,12 +270,21 @@ function LoadQuoteForm({ subTotal = 0, current = null }) {
               />
             </Form.Item>
           </Col>
-          <Col className="gutter-row" span={5}>
+          <Col className="gutter-row" span={6}>
             <MoneyInputFormItem readOnly value={taxTotal} />
           </Col>
         </Row>
+      
         <Row gutter={[12, -5]}>
-          <Col className="gutter-row" span={4} offset={15}>
+          <Col className="gutter-row" 
+          md={{
+            span: 2,
+            offset: 16,
+          }}
+          xs={{
+            span: 5,
+            offset: 13,
+            }}>
             <p
               style={{
                 paddingLeft: '12px',
@@ -268,7 +294,7 @@ function LoadQuoteForm({ subTotal = 0, current = null }) {
               {translate('Total')} :
             </p>
           </Col>
-          <Col className="gutter-row" span={5}>
+          <Col className="gutter-row" span={6}>
             <MoneyInputFormItem readOnly value={total} />
           </Col>
         </Row>

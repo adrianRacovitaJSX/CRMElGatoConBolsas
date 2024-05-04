@@ -6,7 +6,7 @@ import AuthLayout from '@/layout/AuthLayout';
 import SideContent from './SideContent';
 import SelectLanguage from '@/components/SelectLanguage';
 
-import logo from '@/style/images/logo.png';
+import logo from '@/style/images/idurar-crm-erp.svg';
 
 const { Content } = Layout;
 const { Title } = Typography;

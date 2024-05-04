@@ -90,6 +90,7 @@ export default function ReadItem({ config, selectedItem }) {
     subTotal: 0,
     taxTotal: 0,
     taxRate: 0,
+    recargoTotal: 0, // Agrega el campo recargoTotal
     total: 0,
     credit: 0,
     number: 0,
@@ -207,7 +208,7 @@ export default function ReadItem({ config, selectedItem }) {
         }}
       >
         <Row>
-          <Statistic title="Status" value={currentErp.status} />
+          <Statistic title="Estado" value={currentErp.status} />
           <Statistic
             title={translate('SubTotal')}
             value={moneyFormatter({ amount: currentErp.subTotal })}
@@ -232,10 +233,10 @@ export default function ReadItem({ config, selectedItem }) {
         </Row>
       </PageHeader>
       <Divider dashed />
-      <Descriptions title={`Client : ${currentErp.client.name}`}>
+      <Descriptions title={`Cliente : ${currentErp.client.name}`}>
         <Descriptions.Item label={translate('Address')}>{client.address}</Descriptions.Item>
+        <Descriptions.Item label="CIF">{client.cif}</Descriptions.Item>
         <Descriptions.Item label={translate('email')}>{client.email}</Descriptions.Item>
-        <Descriptions.Item label={translate('Phone')}>{client.phone}</Descriptions.Item>
       </Descriptions>
       <Divider />
       <Row gutter={[12, 0]}>
@@ -294,17 +295,34 @@ export default function ReadItem({ config, selectedItem }) {
           </Col>
           <Col className="gutter-row" span={12}>
             <p>
-              {translate('Tax Total')} ({currentErp.taxRate} %) :
+              Impuestos: ({currentErp.taxRate} %) :
+            </p>
+          </Col>
+
+          <Col className="gutter-row" span={12}>
+            <p>{moneyFormatter({ amount: currentErp.taxTotal })}</p>
+          </Col>
+          <Col className="gutter-row" span={12}>
+            <p>
+              Recargo: 5.2% :
             </p>
           </Col>
           <Col className="gutter-row" span={12}>
-            <p>{moneyFormatter({ amount: currentErp.taxTotal })}</p>
+            <p>{moneyFormatter({ amount: currentErp.recargoTotal})}</p>
           </Col>
           <Col className="gutter-row" span={12}>
             <p>{translate('Total')} :</p>
           </Col>
           <Col className="gutter-row" span={12}>
-            <p>{moneyFormatter({ amount: currentErp.total })}</p>
+          <p>
+            {entity === 'invoice' ? (
+              <>
+                {moneyFormatter({ amount: currentErp.total })}
+              </>
+            ) : (
+              moneyFormatter({ amount: currentErp.total })
+            )}
+          </p>          
           </Col>
         </Row>
       </div>

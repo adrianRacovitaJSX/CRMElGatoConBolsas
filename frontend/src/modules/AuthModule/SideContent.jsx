@@ -1,5 +1,5 @@
 import { Space, Layout, Divider, Typography } from 'antd';
-import logo from '@/style/images/logo.png';
+import logo from '@/style/images/idurar-crm-erp.svg';
 import useLanguage from '@/locale/useLanguage';
 
 const { Content } = Layout;
@@ -20,10 +20,10 @@ export default function SideContent() {
       <div style={{ width: '100%' }}>
         <img
           src={logo}
-          alt="El Gato Con Bolsas CRM"
+          alt="IDURAR ERP CRM"
           style={{ margin: '0 auto 40px', display: 'block' }}
-          height={150}
-          width={325}
+          height={63}
+          width={220}
         />
         <div className="space40"></div>
         <Title level={3}>{translate('Manage your company with')} :</Title>

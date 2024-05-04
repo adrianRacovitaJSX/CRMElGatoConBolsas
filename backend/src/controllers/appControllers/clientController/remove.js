@@ -19,14 +19,14 @@ const remove = async (Model, req, res) => {
     return res.status(400).json({
       success: false,
       result: null,
-      message: 'Cannot delete client if client have any quote  or invoice',
+      message: 'No se pueden eliminar clientes con facturas pendientes',
     });
   }
   if (invoice) {
     return res.status(400).json({
       success: false,
       result: null,
-      message: 'Cannot delete client if client have any quote or invoice',
+      message: 'No se pueden eliminar clientes con facturas pendientes',
     });
   }
 
@@ -36,7 +36,7 @@ const remove = async (Model, req, res) => {
     return res.status(404).json({
       success: false,
       result: null,
-      message: 'No client found by this id: ' + id,
+      message: 'No se ha encontrado el cliente: ' + id,
     });
   }
 
@@ -69,7 +69,7 @@ const remove = async (Model, req, res) => {
   return res.status(200).json({
     success: true,
     result: null,
-    message: 'Successfully Deleted the client by id: ' + id,
+    message: 'Eliminado el cliente: ' + id,
   });
 };
 module.exports = remove;

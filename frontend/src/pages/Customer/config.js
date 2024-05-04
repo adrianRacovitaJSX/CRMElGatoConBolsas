@@ -3,7 +3,6 @@ export const fields = {
     type: 'selectwithfeedback',
     renderAsTag: true,
     options: [
-      { value: 'people', label: 'people', color: 'magenta' },
       { value: 'company', label: 'company', color: 'blue' },
     ],
     required: true,
@@ -13,17 +12,14 @@ export const fields = {
     type: 'string',
     disableForForm: true,
   },
-  country: {
-    type: 'country',
-    // color: 'red',
-    disableForForm: true,
-  },
-  phone: {
-    type: 'phone',
-    disableForForm: true,
-  },
-  email: {
-    type: 'email',
-    disableForForm: true,
+  company: {
+    type: 'search',
+    label: 'company',
+    entity: 'company',
+    displayLabels: ['name'],
+    searchFields: 'name',
+    dataIndex: ['company', 'name'],
+    disableForTable: true,
+    feedback: 'company',
   },
 };

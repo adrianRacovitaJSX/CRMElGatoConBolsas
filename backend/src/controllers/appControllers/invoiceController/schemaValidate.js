@@ -17,10 +17,13 @@ const schema = Joi.object({
         quantity: Joi.number().required(),
         price: Joi.number().required(),
         total: Joi.number().required(),
+        discount: Joi.number().allow(0).optional(), // Agregar la propiedad "discount"
       }).required()
     )
     .required(),
   taxRate: Joi.alternatives().try(Joi.number(), Joi.string()).required(),
+  recargo: Joi.number().optional(), // Nuevo campo "recargo"
+  
 });
 
 module.exports = schema;

@@ -15,7 +15,7 @@ methods.create = async (req, res) => {
   return res.status(200).json({
     success: true,
     result: result,
-    message: 'Tax created successfully',
+    message: 'Tipo de impuesto creado correctamente.',
   });
 };
 
@@ -23,7 +23,7 @@ methods.delete = async (req, res) => {
   return res.status(403).json({
     success: false,
     result: null,
-    message: "you can't delete tax after it has been created",
+    message: "No puedes eliminar el impuesto después de haber sido creado.",
   });
 };
 
@@ -50,7 +50,7 @@ methods.update = async (req, res) => {
     return res.status(422).json({
       success: false,
       result: null,
-      message: 'You cannot disable the tax because it is the only existing one',
+      message: 'No puedes eliminar el impuesto porque es el único existente.',
     });
   }
 
@@ -58,7 +58,7 @@ methods.update = async (req, res) => {
 
   return res.status(200).json({
     success: true,
-    message: 'Tax updated successfully',
+    message: 'Tipo de impuesto actualizado correctamente.',
     result,
   });
 };

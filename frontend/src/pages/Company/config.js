@@ -3,27 +3,13 @@ export const fields = {
     type: 'string',
     required: true,
   },
-  mainContact: {
-    type: 'search',
-    renderAsTag: true,
-    label: 'Contact',
-    entity: 'people',
-    displayLabels: ['firstname', 'lastname'],
-    searchFields: 'firstname,lastname',
-    dataIndex: ['mainContact', 'firstname'],
+  cif: {
+    type: 'string',
   },
-  country: {
-    type: 'country',
+  address: {
+    type: 'string',
   },
-  phone: {
-    type: 'phone',
-  },
-  email: {
-    type: 'email',
-  },
-  website: {
-    type: 'url',
-  },
+
   // legalName: {
   //   type: 'string',
   //   required: true,

@@ -15,7 +15,14 @@ module.exports = downloadPdf = async (req, res, { directory, id }) => {
 
       // Continue process if result is returned
 
-      const fileId = modelName.toLowerCase() + '-' + result._id + '.pdf';
+      let filePrefix = 'factura-'; // Default prefix for invoices
+
+      if (modelName.toLowerCase() === 'quote') {
+        filePrefix = 'albaran-'; // Override for quotes
+      }
+      
+      const fileId = filePrefix + result.number + '.pdf';
+
       const folderPath = modelName.toLowerCase();
       const targetLocation = `src/public/download/${folderPath}/${fileId}`;
       await custom.generatePdf(

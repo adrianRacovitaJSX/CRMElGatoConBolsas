@@ -28,14 +28,14 @@ const updateManySetting = async (req, res) => {
     return res.status(202).json({
       success: false,
       result: null,
-      message: 'No settings provided ',
+      message: 'No hay configuración.',
     });
   }
   if (settingsHasError) {
     return res.status(202).json({
       success: false,
       result: null,
-      message: 'Settings provided has Error',
+      message: 'Configuración no compatible.',
     });
   }
   const result = await Model.bulkWrite(updateDataArray);
@@ -44,13 +44,13 @@ const updateManySetting = async (req, res) => {
     return res.status(404).json({
       success: false,
       result: null,
-      message: 'No settings found by to update',
+      message: 'No se han encontrado ajustes.',
     });
   } else {
     return res.status(200).json({
       success: true,
       result: [],
-      message: 'we update all settings',
+      message: 'Se han actualizado los ajustes.',
     });
   }
 };

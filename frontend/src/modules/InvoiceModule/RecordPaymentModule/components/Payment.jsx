@@ -114,7 +114,7 @@ export default function Payment({ config, currentItem }) {
               {money.amountFormatter({ amount: currentErp.subTotal })}
             </Descriptions.Item>
             <Descriptions.Item label={translate('total')}>
-              {money.amountFormatter({ amount: currentErp.total })}
+              {money.amountFormatter({  amount: currentErp.total + (currentErp.recargoTotal) })}
             </Descriptions.Item>
             <Descriptions.Item label={translate('discount')}>
               {money.amountFormatter({ amount: currentErp.discount })}

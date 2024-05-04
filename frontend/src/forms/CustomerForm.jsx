@@ -103,6 +103,20 @@ export default function CustomerForm({ isUpdateForm = false }) {
       >
         <Input />
       </Form.Item>
+      <Form.Item
+        name="address"
+        label={translate('address')}
+        rules={[
+          {
+            required: true,
+          },
+          {
+            validator: validateEmptyString,
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
     </>
   );
 }

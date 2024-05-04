@@ -51,7 +51,7 @@ const update = async (req, res) => {
   return res.status(200).json({
     success: true,
     result,
-    message: 'we update this document by this id: ' + req.params.id,
+    message: 'Actualizado el albarán con id: ' + req.params.id,
   });
 };
 module.exports = update;

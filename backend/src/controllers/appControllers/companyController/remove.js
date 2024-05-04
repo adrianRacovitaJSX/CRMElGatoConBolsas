@@ -40,7 +40,7 @@ const remove = async (Model, req, res) => {
     return res.status(404).json({
       success: false,
       result: null,
-      message: 'No people found by this id: ' + id,
+      message: 'No se encontró la persona con id: ' + id,
     });
   }
   return res.status(200).json({

@@ -43,6 +43,7 @@ function FormElement({ field, setFeedback }) {
   const compunedComponent = {
     string: <Input autoComplete="off" />,
     url: <Input addonBefore="http://" autoComplete="off" placeholder="www.website.com" />,
+    address: <Input autoComplete="off" />,
     textarea: <TextArea rows={4} />,
     email: <Input autoComplete="off" placeholder="email@gmail.com" />,
     number: <InputNumber style={{ width: '100%' }} />,
@@ -154,6 +155,7 @@ function FormElement({ field, setFeedback }) {
         ))}
       </Select>
     ),
+  
     country: (
       <Select
         showSearch
