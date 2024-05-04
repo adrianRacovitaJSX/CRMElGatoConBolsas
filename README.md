@@ -16,7 +16,6 @@ Tu aplicación CRM privada es una plataforma integral diseñada para la gestión
 - Gestión de clientes: Seguimiento detallado de clientes potenciales y existentes.
 - Gestión de contactos: Organización eficiente de información de contacto.
 - Seguimiento de ventas: Seguimiento en tiempo real del proceso de ventas y oportunidades.
-- Administración de tareas: Asignación y seguimiento de tareas dentro del equipo.
 
 ## Contribuciones
 
