@@ -1,60 +1,59 @@
-# Security Policy
+# Política de Seguridad
 
-## Supported Releases
+## Versiones Soportadas
 
-| Version | Supported          |
+| Versión | Soportada          |
 | ------- | ------------------ |
-| 2.0.1   | :white_check_mark: |
-| 2.0.0   | :white_check_mark: |
+| 1.0.0   | :white_check_mark: |
 
-## Reporting a Vulnerability
+## Reportar una Vulnerabilidad
 
-Please do not open public github issues or pull requests on this repository for security-related matters. Instead, follow the responsible disclosure process outlined below.
+Por favor, no abra problemas públicos en GitHub o solicitudes de extracción en este repositorio para asuntos relacionados con la seguridad. En su lugar, siga el proceso de divulgación responsable descrito a continuación.
 
-### Scope
+### Alcance
 
-This security policy covers the security of this repository and its code. If you discover a security vulnerability related to this repository, please report it responsibly.
+Esta política de seguridad cubre la seguridad de este repositorio y su código. Si descubre una vulnerabilidad de seguridad relacionada con este repositorio, por favor repórtela de manera responsable.
 
-### Responsible Disclosure Process
+### Proceso de Divulgación Responsable
 
-#### Option 1: Reporting via Github Security Advisors
+#### Opción 1: Reportando a través de los Asesores de Seguridad de Github
 
-1. **Contact Us**: Submit your report to [https://github.com/idurar/idurar-erp-crm/security](https://github.com/idurar/idurar-erp-crm/security) with details of the vulnerability. Please provide a clear and concise description of the issue, any potential impact, and a step-by-step demonstration if possible. Please do not include sensitive information in your initial email.
+1. **Contáctenos**: Envíe su informe a adrianliviuracovita@gmail.com con detalles sobre la vulnerabilidad. Por favor, proporcione una descripción clara y concisa del problema, cualquier impacto potencial y una demostración paso a paso si es posible. Por favor, no incluya información sensible en su correo electrónico inicial.
 
-2. **Confirmation**: We will acknowledge receipt of your report within [X] business days and provide an estimated timeline for when you can expect a response.
+2. **Confirmación**: Reconoceremos la recepción de su informe dentro de [X] días hábiles y proporcionaremos un cronograma estimado para cuándo puede esperar una respuesta.
 
-3. **Investigation**: We will investigate the issue, which may involve reproducing the vulnerability or seeking further information from you.
+3. **Investigación**: Investigaremos el problema, lo cual puede implicar reproducir la vulnerabilidad o buscar más información de su parte.
 
-4. **Resolution**: Once the vulnerability is confirmed, we will work to address it promptly and develop a fix.
+4. **Resolución**: Una vez que se confirme la vulnerabilidad, trabajaremos para abordarla rápidamente y desarrollar una solución.
 
-5. **Disclosure**: We will coordinate with you regarding the public disclosure of the vulnerability. We aim to release a security advisory with information about the issue and the fix.
+5. **Divulgación**: Coordinaremos con usted sobre la divulgación pública de la vulnerabilidad. Nuestro objetivo es publicar un aviso de seguridad con información sobre el problema y la solución.
 
-6. **Credit**: If you report a vulnerability that is successfully fixed, we will credit you for your responsible disclosure in the security advisory unless you prefer to remain anonymous.
+6. **Reconocimiento**: Si informa de una vulnerabilidad que se soluciona con éxito, le acreditaremos por su divulgación responsable en el aviso de seguridad a menos que prefiera permanecer anónimo.
 
-#### Option 2: Reporting via Huntr.dev
+#### Opción 2: Reportando a través de Huntr.dev
 
-Alternatively, you can report vulnerabilities through [Huntr.dev](https://huntr.dev). Follow these steps:
+Alternativamente, puede reportar vulnerabilidades a través de [Huntr.dev](https://huntr.dev). Siga estos pasos:
 
-1. **Submit Report**: Create a report for this repository on Huntr.dev, providing details of the vulnerability. Include a link to this repository in your report.
+1. **Enviar Informe**: Cree un informe para este repositorio en Huntr.dev, proporcionando detalles de la vulnerabilidad. Incluya un enlace a este repositorio en su informe.
 
-2. **Confirmation**: We will be notified of your report on Huntr.dev and will acknowledge it within [X] business days.
+2. **Confirmación**: Seremos notificados de su informe en Huntr.dev y lo reconoceremos dentro de [X] días hábiles.
 
-3. **Investigation**: We will investigate the issue, which may involve reproducing the vulnerability or seeking further information from you.
+3. **Investigación**: Investigaremos el problema, lo cual puede implicar reproducir la vulnerabilidad o buscar más información de su parte.
 
-4. **Resolution**: Once the vulnerability is confirmed, we will work to address it promptly and develop a fix.
+4. **Resolución**: Una vez que se confirme la vulnerabilidad, trabajaremos para abordarla rápidamente y desarrollar una solución.
 
-5. **Disclosure**: We will coordinate with you regarding the public disclosure of the vulnerability. We aim to release a security advisory with information about the issue and the fix.
+5. **Divulgación**: Coordinaremos con usted sobre la divulgación pública de la vulnerabilidad. Nuestro objetivo es publicar un aviso de seguridad con información sobre el problema y la solución.
 
-6. **Credit**: If you report a vulnerability that is successfully fixed, we will credit you for your responsible disclosure in the security advisory unless you prefer to remain anonymous.
+6. **Reconocimiento**: Si informa de una vulnerabilidad que se soluciona con éxito, le acreditaremos por su divulgación responsable en el aviso de seguridad a menos que prefiera permanecer anónimo.
 
-### Safe Harbor
+### Puerto Seguro
 
-We consider security research conducted under this policy to be:
+Consideramos que la investigación de seguridad realizada bajo esta política es:
 
-- Authorized concerning any applicable anti-hacking laws, and we won't initiate legal action against researchers for their findings.
+- Autorizada con respecto a cualquier ley anti-hacking aplicable, y no iniciaremos acciones legales contra los investigadores por sus hallazgos.
 
-- Subject to responsible disclosure, where we work with researchers to understand and address reported vulnerabilities before public disclosure.
+- Sujeta a divulgación responsable, donde trabajamos con los investigadores para comprender y abordar las vulnerabilidades informadas antes de la divulgación pública.
 
-We appreciate your contributions to the security of this project and community.
+Agradecemos sus contribuciones a la seguridad de este proyecto y comunidad.
 
-Thank you!
+¡Gracias!
