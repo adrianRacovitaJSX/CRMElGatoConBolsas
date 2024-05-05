@@ -53,7 +53,7 @@ const RegisterPage = () => {
       <Result
         status="info"
         title={translate('Verify your account')}
-        subTitle={translate('Check your email address to verify your account')}
+        subTitle="Registrado con éxito, revisa tu correo para verificar tu cuenta."
         // extra={
         //   <Button
         //     type="primary"
