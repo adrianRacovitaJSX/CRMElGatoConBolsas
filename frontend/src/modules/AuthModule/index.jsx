@@ -31,15 +31,14 @@ const AuthModule = ({ authContent, AUTH_TITLE }) => {
         }}
       >
         <Col xs={{ span: 24 }} sm={{ span: 24 }} md={{ span: 0 }} span={0}>
-          <img
+           <img
             src={logo}
             alt="Logo"
             style={{
-              margin: '-70px auto 40px',
-              display: 'block',
+              margin: '-80px 200px -20px -20px',
+              display: 'flex',
+              width: "350px",
             }}
-            height={103}
-            width={420}
           />
           <div className="space10" />
         </Col>
