@@ -19,14 +19,16 @@ import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
 
 import { useNavigate } from 'react-router-dom';
 
-function SaveForm({ form }) {
+function SaveForm({ form, onSubmit }) {
   const translate = useLanguage();
-  const handelClick = () => {
-    form.submit();
+  const handleClick = () => {
+    form.validateFields().then((values) => {
+      onSubmit(values);
+    });
   };
 
   return (
-    <Button onClick={handelClick} type="primary" icon={<PlusOutlined />}>
+    <Button onClick={handleClick} type="primary" icon={<PlusOutlined />}>
       {translate('Save')}
     </Button>
   );
@@ -82,6 +84,9 @@ export default function CreateItem({ config, CreateForm }) {
   }, [isSuccess]);
 
   const onSubmit = (fieldsValue) => {
+    debugger;
+    console.log('Form Values:', fieldsValue); // Add this line to log the form values
+  
     if (fieldsValue) {
       if (fieldsValue.items) {
         let newList = [...fieldsValue.items];
@@ -95,6 +100,13 @@ export default function CreateItem({ config, CreateForm }) {
       }
     }
     dispatch(erp.create({ entity, jsonData: fieldsValue }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+    form.validateFields().then((values) => {
+      onSubmit(values);
+    });
   };
 
   return (
@@ -115,7 +127,7 @@ export default function CreateItem({ config, CreateForm }) {
           >
             {translate('Cancel')}
           </Button>,
-          <SaveForm form={form} key={`${uniqueId()}`} />,
+          <SaveForm formInstance={form} onSubmit={onSubmit} key={`${uniqueId()}`} />
         ]}
         style={{
           padding: '20px 0px',
@@ -123,8 +135,8 @@ export default function CreateItem({ config, CreateForm }) {
       ></PageHeader>
       <Divider dashed />
       <Loading isLoading={isLoading}>
-        <Form form={form} layout="vertical" onFinish={onSubmit} onValuesChange={handelValuesChange}>
-          <CreateForm subTotal={subTotal} offerTotal={offerSubTotal} />
+        <Form form={form} layout="vertical" onFinish={onSubmit} onValuesChange={handelValuesChange} onSubmit={handleSubmit}>
+          <CreateForm formInstance={form} subTotal={subTotal} offerTotal={offerSubTotal} />
         </Form>
       </Loading>
     </>

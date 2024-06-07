@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Avatar, Dropdown, Layout } from 'antd';
+import { Avatar, Dropdown, Layout, Button } from 'antd';
 
 // import Notifications from '@/components/Notification';
 
@@ -25,7 +25,9 @@ export default function HeaderContent() {
   const { Header } = Layout;
 
   const translate = useLanguage();
-
+  const goToEmpresa = () => {
+    window.open('https://empresa.elgatoconbolsas.es', '_blank');
+  };
   const [hasPhotoprofile, setHasPhotoprofile] = useState(false);
 
   useEffect(() => {
@@ -101,6 +103,7 @@ export default function HeaderContent() {
     },
   ];
   return (
+    
     <Header
       style={{
         padding: '20px',
@@ -111,6 +114,7 @@ export default function HeaderContent() {
         gap: ' 15px',
       }}
     >
+      
       <Dropdown
         menu={{
           items,
@@ -135,7 +139,9 @@ export default function HeaderContent() {
         </Avatar>
         {/* </Badge> */}
       </Dropdown>
-      
+      <Button type="primary" onClick={goToEmpresa} className='mt-1'>
+        Accede a CRM Empresa
+      </Button>
       <SelectLanguage />
     </Header>
   );

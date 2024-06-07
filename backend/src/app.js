@@ -19,43 +19,6 @@ const useLanguage = require('@/locale/useLanguage');
 // create our Express app
 const app = express();
 
-// const settingsCache = new NodeCache({ stdTTL: 100, checkperiod: 120 });
-
-// const loadSettings = async () => {
-//   const allSettings = [];
-//   const datas = await listAllSettings();
-//   datas.map(async (data) => {
-//     allSettings.push({ key: data.settingKey, val: data.settingValue });
-//   });
-//   return allSettings;
-// };
-
-// const loadSettings = async () => {
-//   const allSettings = {};
-//   const datas = await listAllSettings();
-//   datas.map(async (data) => {
-//     allSettings[data.settingKey] = data.settingValue;
-//   });
-//   return allSettings;
-// };
-
-// app.use(async function (req, res, next) {
-//   req.settings = await loadSettings();
-//   const lang = req.settings['idurar_app_language'];
-//   req.translate = useLanguage(lang);
-//   next();
-//   // const cache = settingsCache.get('idurar_app_language');
-//   // if (!cache) {
-//   //   let settingsList = await loadSettings();
-//   //   settingsCache.mset(settingsList);
-//   //   req.settings = settingsCache;
-//   //   const lang = settingsCache.get('idurar_app_language');
-//   //   console.log('🚀 ~ file: app.js:40 ~ lang:', lang);
-//   //   req.translate = useLanguage(lang);
-//   //   next();
-//   // }
-// });
-
 if (process.env.NODE_ENV === 'production') {
   app.use(
   cors({
@@ -75,7 +38,6 @@ if (process.env.NODE_ENV === 'production') {
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(compression());
 // Here our API Routes
 app.use('/api', coreAuthRouter);

@@ -4,6 +4,8 @@ import { tagColor } from '@/utils/statusTagColor';
 import QuoteDataTableModule from '@/modules/QuoteModule/QuoteDataTableModule';
 import { useMoney, useDate } from '@/settings';
 import useLanguage from '@/locale/useLanguage';
+import { ImCross } from 'react-icons/im';
+import { IconContext } from 'react-icons';
 
 export default function Quote() {
   const translate = useLanguage();

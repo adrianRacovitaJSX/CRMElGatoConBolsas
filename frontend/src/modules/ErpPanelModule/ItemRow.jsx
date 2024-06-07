@@ -1,19 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react'; // Asegúrate de importar React
-import { Form, Input, InputNumber, Row, Col, } from 'antd';
+import { Form, Input, InputNumber, Row, Col } from 'antd';
 import AutoCompleteAsync from '@/components/AutoCompleteAsync';
 import { DeleteOutlined } from '@ant-design/icons';
 import { useMoney, useDate } from '@/settings';
 import calculate from '@/utils/calculate';
 
 export default function ItemRow({ field, setInputValue, remove, current = null, form }) {
-
   const [totalState, setTotal] = useState(undefined);
   const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState(0);
   const [description, setDescription] = useState('');
 
   const money = useMoney();
-  
+
   const updateQt = (value) => {
     setQuantity(value);
   };
@@ -29,11 +28,15 @@ export default function ItemRow({ field, setInputValue, remove, current = null, 
       if (productos) {
         // Suponiendo que productData contiene los campos 'price' y 'description'
         setPrice(productos.precio);
-        form.setFieldsValue({ [field.name]: { ...form.getFieldValue(field.name), price: productos.precio } });
-        form.setFieldsValue({ [field.name]: { ...form.getFieldValue(field.name), description: productos.descripcion } });
+        form.setFieldsValue({
+          [field.name]: { ...form.getFieldValue(field.name), price: productos.precio },
+        });
+        form.setFieldsValue({
+          [field.name]: { ...form.getFieldValue(field.name), description: productos.descripcion },
+        });
       }
     } catch (error) {
-      console.error("Error al obtener datos del producto: ", error);
+      console.error('Error al obtener datos del producto: ', error);
     }
   };
   useEffect(() => {
@@ -82,8 +85,8 @@ export default function ItemRow({ field, setInputValue, remove, current = null, 
   const handleSelectProduct = (value) => {
     const selectedDescription = value.description;
     const selectedPrice = value.price;
-    console.log("Description:", selectedDescription);
-    console.log("Price:", selectedPrice);
+    console.log('Description:', selectedDescription);
+    console.log('Price:', selectedPrice);
     setDescription(selectedDescription);
     setPrice(selectedPrice);
 
@@ -107,17 +110,13 @@ export default function ItemRow({ field, setInputValue, remove, current = null, 
   return (
     <Row gutter={[12, 12]} style={{ position: 'relative' }}>
       <Col className="gutter-row" span={4}>
-        <Form.Item
-          name={[field.name, 'itemName']}
-          rules={[{ required: true }]}
-        >
-        <Input placeholder="Código" />
-     
-   </Form.Item>
+        <Form.Item name={[field.name, 'itemName']} rules={[{ required: true }]}>
+          <Input placeholder="Código" />
+        </Form.Item>
       </Col>
       <Col className="gutter-row" span={5}>
         <Form.Item name={[field.name, 'description']}>
-        <Input placeholder="Descripción" />
+          <Input placeholder="Descripción" />
         </Form.Item>
       </Col>
       <Col className="gutter-row" span={3}>
@@ -128,7 +127,7 @@ export default function ItemRow({ field, setInputValue, remove, current = null, 
       <Col className="gutter-row" span={6}>
         <Form.Item name={[field.name, 'price']} rules={[{ required: true }]}>
           <InputNumber
-value={price}
+            value={price}
             className="moneyInput"
             onChange={updatePrice}
             min={0}

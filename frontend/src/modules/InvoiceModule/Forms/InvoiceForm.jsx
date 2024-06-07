@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import dayjs from 'dayjs';
-import { Form, Input, InputNumber, Button, Select, Divider, Row, Col } from 'antd';
+import { Form, Input, InputNumber, Button, Select, Divider, Row, Col, AutoComplete } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { DatePicker } from 'antd';
 import AutoCompleteAsync from '@/components/AutoCompleteAsync';
@@ -13,10 +13,17 @@ import calculate from '@/utils/calculate';
 import { useSelector } from 'react-redux';
 import SelectAsync from '@/components/SelectAsync';
 
+const itemsData = [
+  { name: 'Item A', description: 'Description of Item A', price: 10.5 },
+  { name: 'Item B', description: 'Description of Item B', price: 15.0 },
+  { name: 'Item C', description: 'Description of Item C', price: 8.25 },
+  // Add more items as needed
+];
+
 export default function InvoiceForm({ subTotal = 0, current = null }) {
   const { last_invoice_number } = useSelector(selectFinanceSettings);
 
-   // if (!last_invoice_number) {
+  // if (!last_invoice_number) {
   //   return <></>;
   // }
 
@@ -34,12 +41,49 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
   const [recargoTotal, setRecargoTotal] = useState(0);
   const [currentYear, setCurrentYear] = useState(() => new Date().getFullYear());
   const [lastNumber, setLastNumber] = useState(() => last_invoice_number + 1);
-  const [formData, setFormData] = useState({ description: '' }); // Add initial description property
-  const [form] = Form.useForm();
-  const handleSetInputValue = (field, value) => {
-    setFormData({ ...formData, [field]: value }); // Update state
+  const [form] = Form.useForm(); // Get the form instance directly
+  const [itemRows, setItemRows] = useState([
+    { itemName: '', description: '', quantity: 1, price: 0, total: 0 }, // Initial empty row
+  ]);
+
+  const handleItemChange = (index, field, value) => {
+    const newRows = [...itemRows];
+    newRows[index][field] = value;
+
+    if (field === 'itemName') {
+      const item = itemsData.find((item) => item.name === value);
+      if (item) {
+        form.current.setFieldsValue({
+          items: newRows.map((row, i) => ({
+            ...row,
+            ...(i === index && {
+              description: item.description,
+              price: item.price,
+              total: row.quantity * item.price,
+            }),
+          })),
+        });
+      }
+    } else if (field === 'quantity') {
+      form.current.setFieldsValue({
+        items: newRows.map((row, i) => ({
+          ...row,
+          ...(i === index && { total: value * row.price }),
+        })),
+      });
+    }
+
+    calculateSubtotal();
   };
 
+  useEffect(() => {
+    // Initialize form fields when itemRows change
+    form.current?.setFieldsValue({ items: itemRows });
+  }, [itemRows]); // Add itemRows to the dependency array
+
+  const addRow = () => {
+    setItemRows([...itemRows, { itemName: '', description: '', quantity: 1, price: 0, total: 0 }]);
+  };
   const handelTaxChange = (value) => {
     setTaxRate(value / 1);
   };
@@ -49,7 +93,6 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
   };
 
   useEffect(() => {
-
     // Calculate tax based on selected taxRate
     const taxValue = calculate.multiply(subTotal, taxRate) / 100;
 
@@ -68,14 +111,17 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
     setTotal(total);
   }, [subTotal, taxRate, recargo]);
 
-  const addField = useRef(false);
+  /* const addField = useRef(false);
 
   useEffect(() => {
     addField.current.click();
-  }, []);
+  }, []); */
 
   return (
-    <>
+    <Form
+      form={form}
+      // ... other form props
+    >
       <Row gutter={[12, 0]}>
         <Col className="gutter-row" span={9}>
           <Form.Item
@@ -177,7 +223,7 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
       <Divider dashed />
       <Row gutter={[12, 12]} style={{ position: 'relative' }}>
         <Col className="gutter-row mobile-full-width" span={4}>
-          <p>Código</p>
+          <p>Name</p>
         </Col>
         <Col className="gutter-row mobile-full-width" span={5}>
           <p>Descripción</p>
@@ -192,53 +238,70 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
           <p>Total</p>
         </Col>
       </Row>
-      <Form.List form={form} name="items">
-        {(fields, { add, remove }) => (
-          <>
-            {fields.map((field) => (
-             <ItemRow
-                setInputValue={handleSetInputValue} // Pass the prop here
-                key={field.key}
-                remove={remove}
-                field={field}
-                current={current}
-                form={form} // Pass the form prop here
-              />
-            ))}
-            <Form.Item>
-              <Button
-                type="dashed"
-                onClick={() => add()}
-                block
-                icon={<PlusOutlined />}
-                ref={addField}
-              >
-                Añadir producto
-              </Button>
-            </Form.Item>
-          </>
-        )}
-      </Form.List>
+      <Row gutter={[12, 12]}>
+        <div>
+          {itemRows.map((row, index) => (
+            <Row gutter={[12, 12]} key={index}>
+              <Col span={4}>
+                <Form.Item name={['items', index, 'itemName']}>
+                  <AutoComplete
+                    options={itemsData.map((item) => ({ value: item.name }))}
+                    onChange={(value) => handleItemChange(index, 'itemName', value)}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={5}>
+                <Form.Item name={['items', index, 'description']}>
+                  <Input readOnly />
+                </Form.Item>
+              </Col>
+              <Col span={3}>
+                <Form.Item name={['items', index, 'quantity']}>
+                  <InputNumber
+                    min={1}
+                    onChange={(value) => handleItemChange(index, 'quantity', value)}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={6}>
+                <Form.Item name={['items', index, 'price']}>
+                  <InputNumber readOnly />
+                </Form.Item>
+              </Col>
+              <Col span={6}>
+                <Form.Item name={['items', index, 'total']}>
+                  <InputNumber readOnly />
+                </Form.Item>
+              </Col>
+            </Row>
+          ))}
+          <Button type="dashed" onClick={addRow} block icon={<PlusOutlined />}>
+            Add Item
+          </Button>
+        </div>
+      </Row>
+
       <Divider dashed />
       <div style={{ position: 'relative', width: ' 100%', float: 'right' }}>
         <Row gutter={[2, -5]}>
-          <Col className="gutter-row"
-          span={10}>
+          <Col className="gutter-row" span={10}>
             <Form.Item>
               <Button type="primary" htmlType="submit" icon={<PlusOutlined />} block>
                 {translate('Save')}
               </Button>
             </Form.Item>
           </Col>
-          <Col className="gutter-row"
-             md={{
+          <Col
+            className="gutter-row"
+            md={{
               span: 3,
               offset: 15,
             }}
             xs={{
               span: 7,
               offset: 11,
-              }}>
+            }}
+          >
             <p
               style={{
                 paddingLeft: '12px',
@@ -253,16 +316,18 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
           </Col>
         </Row>
         <Row gutter={[12, -5]}>
-          <Col className="gutter-row"
-          md={{
-            span:3,
-            offset: 15,
-          }}
-          xs={{
-            span: 7,
-            offset: 11,
+          <Col
+            className="gutter-row"
+            md={{
+              span: 3,
+              offset: 15,
             }}
-            style={{textAlign: 'center'}}>
+            xs={{
+              span: 7,
+              offset: 11,
+            }}
+            style={{ textAlign: 'center' }}
+          >
             <Form.Item
               name="taxRate"
               rules={[
@@ -288,8 +353,9 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
           </Col>
         </Row>
         <Row gutter={[12, -5]}>
-          <Col className="gutter-row" 
-            span={3} 
+          <Col
+            className="gutter-row"
+            span={3}
             offset={15}
             style={{
               verticalAlign: 'middle',
@@ -317,27 +383,27 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
                   textSizeAdjust: '10px',
                 }}
               ></Select>
-
-            </Form.Item> 
+            </Form.Item>
           </Col>
           <Col className="gutter-row" span={6}>
             <MoneyInputFormItem readOnly value={recargoTotal} />
           </Col>
         </Row>
         <Row gutter={[12, -5]}>
-          <Col className="gutter-row" 
-          md={{
-            span: 2,
-            offset: 16,
-          }}
-          xs={{
-            span: 5,
-            offset: 13,
+          <Col
+            className="gutter-row"
+            md={{
+              span: 2,
+              offset: 16,
+            }}
+            xs={{
+              span: 5,
+              offset: 13,
             }}
             style={{
               verticalAlign: 'middle',
             }}
-            >
+          >
             <p
               style={{
                 paddingLeft: '12px',
@@ -353,6 +419,6 @@ function LoadInvoiceForm({ subTotal = 0, current = null }) {
           </Col>
         </Row>
       </div>
-    </>
+    </Form>
   );
 }

@@ -24,15 +24,15 @@ const useMoney = () => {
   function currencyFormat(amount) {
     return currency(amount).dollars() > 0 || !zero_format
       ? currency(amount, {
-          separator: thousand_sep,
-          decimal: decimal_sep,
+          separator: '.',
+          decimal: ',',
           symbol: '',
           precision: cent_precision,
         }).format()
       : 0 +
           currency(amount, {
-            separator: thousand_sep,
-            decimal: decimal_sep,
+            separator: '.',
+          decimal: ',',
             symbol: '',
             precision: cent_precision,
           }).format();

@@ -1,7 +1,6 @@
 const express = require('express');
 const { catchErrors } = require('@/handlers/errorHandlers');
 const router = express.Router();
-
 const { hasPermission } = require('@/middlewares/permission');
 const appControllers = require('@/controllers/appControllers');
 const { routesList } = require('@/models/utils');

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button, Drawer, Layout, Menu } from 'antd';
-
+import { FaChartBar } from 'react-icons/fa';
 import { useAppContext } from '@/context/appContext';
 
 import useLanguage from '@/locale/useLanguage';
@@ -25,7 +25,10 @@ import {
   ShopOutlined,
   FilterOutlined,
   WalletOutlined,
+  MailOutlined,
+  ShoppingCartOutlined,
 } from '@ant-design/icons';
+import { FaUserPlus } from 'react-icons/fa';
 
 const { Sider } = Layout;
 
@@ -54,6 +57,12 @@ function Sidebar({ collapsible, isMobile = false }) {
       label: <Link to={'/'}>{translate('dashboard')}</Link>,
     },
     {
+      key: 'informes',
+      icon: <FaChartBar />,
+      label: <Link to={'/informes'}>Informes</Link>,
+    },
+
+    {
       key: 'customer',
       icon: <CustomerServiceOutlined />,
       label: <Link to={'/customer'}>Clientes</Link>,
@@ -76,6 +85,17 @@ function Sidebar({ collapsible, isMobile = false }) {
       key: 'quote',
       icon: <FileSyncOutlined />,
       label: <Link to={'/quote'}>{translate('Albaranes')}</Link>,
+    },
+
+    {
+      key: 'pedidos',
+      icon: <ShoppingCartOutlined />,
+      label: <Link to={'/pedidos'}>{translate('Pedidos Web')}</Link>,
+    },
+    {
+      key: 'leadsweb',
+      icon: <FaUserPlus />,
+      label: <Link to={'/leads-web'}>{translate('Leads Web')}</Link>,
     },
     {
       key: 'payment',
@@ -166,42 +186,45 @@ function Sidebar({ collapsible, isMobile = false }) {
   };
 
   return (
-    <Sider
-      collapsible={collapsible}
-      collapsed={collapsible ? isNavMenuClose : collapsible}
-      onCollapse={onCollapse}
-      className="navigation"
-      style={{
-        overflow: 'auto',
-        height: '100vh',
-        position: 'fixed',
-        bottom: '20px',
-        ...(!isMobile && {
-          background: 'none',
-          border: 'none',
-          left: '20px',
-          top: '20px',
-          borderRadius: '8px',
-        }),
-      }}
-      theme={'light'}
-    >
-      <div className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-        <img src={logoText} alt="Logo" style={{ marginLeft: '', height: '58px' }} />
-
-     
-      </div>
-      <Menu
-        items={items}
-        mode="inline"
-        theme={'light'}
-        selectedKeys={[currentPath]}
+    <>
+      <Sider
+        collapsible={collapsible}
+        collapsed={collapsible ? isNavMenuClose : collapsible}
+        onCollapse={onCollapse}
+        className="navigation"
         style={{
-          background: 'none',
-          border: 'none',
+          overflow: 'auto',
+          height: '100vh',
+          position: 'fixed',
+          bottom: '20px',
+          ...(!isMobile && {
+            background: 'none',
+            border: 'none',
+            left: '20px',
+            top: '20px',
+            borderRadius: '8px',
+          }),
         }}
-      />
-    </Sider>
+        theme={'light'}
+      >
+        <div className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+          <img src={logoText} alt="Logo" style={{ marginLeft: '', height: '58px' }} />
+        </div>
+        <div className="bg-[#ff0000] h-auto rounded-2xl mb-5 w-[45%] items-center justify-center ml-[25%]">
+          <h3 className="mt-5 text-white font-bold text-md text-center p-1">Autónomo</h3>
+        </div>
+        <Menu
+          items={items}
+          mode="inline"
+          theme={'light'}
+          selectedKeys={[currentPath]}
+          style={{
+            background: 'none',
+            border: 'none',
+          }}
+        />
+      </Sider>
+    </>
   );
 }
 

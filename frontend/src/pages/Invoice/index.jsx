@@ -5,13 +5,15 @@ import useLanguage from '@/locale/useLanguage';
 import { tagColor } from '@/utils/statusTagColor';
 import { useMoney, useDate } from '@/settings';
 import InvoiceDataTableModule from '@/modules/InvoiceModule/InvoiceDataTableModule';
+import { ImCross } from 'react-icons/im';
+import { IconContext } from 'react-icons';
 
 export default function Invoice() {
   const translate = useLanguage();
   const { dateFormat } = useDate();
   const entity = 'invoice';
   const { moneyFormatter } = useMoney();
-  
+
   // State to hold current filters
   const [filters, setFilters] = useState({});
 
@@ -77,8 +79,8 @@ export default function Invoice() {
 
   // Extract unique client names from the data for filter options
   const clientFilters = useMemo(() => {
-    const uniqueClients = [...new Set(data.map(item => item.client.name))];
-    return uniqueClients.map(client => ({ text: client, value: client }));
+    const uniqueClients = [...new Set(data.map((item) => item.client.name))];
+    return uniqueClients.map((client) => ({ text: client, value: client }));
   }, [data]);
 
   const dataTableColumns = [
@@ -105,7 +107,7 @@ export default function Invoice() {
       render: (total) => moneyFormatter({ amount: total }),
     },
     {
-      title: "Pagado",
+      title: 'Pagado',
       dataIndex: 'credit',
       render: (credit) => moneyFormatter({ amount: credit }),
     },
@@ -114,11 +116,7 @@ export default function Invoice() {
       dataIndex: 'status',
       render: (status) => {
         let tagStatus = tagColor(status);
-        return (
-          <Tag color={tagStatus.color}>
-            {status && translate(tagStatus.label)}
-          </Tag>
-        );
+        return <Tag color={tagStatus.color}>{status && translate(tagStatus.label)}</Tag>;
       },
     },
     {
@@ -126,11 +124,7 @@ export default function Invoice() {
       dataIndex: 'paymentStatus',
       render: (paymentStatus) => {
         let tagStatus = tagColor(paymentStatus);
-        return (
-          <Tag color={tagStatus.color}>
-            {paymentStatus && translate(paymentStatus)}
-          </Tag>
-        );
+        return <Tag color={tagStatus.color}>{paymentStatus && translate(paymentStatus)}</Tag>;
       },
     },
   ];
@@ -163,11 +157,13 @@ export default function Invoice() {
   };
 
   return (
-    <InvoiceDataTableModule
-      config={config}
-      filters={filters} // Pass filters state to child component
-      onFilterChange={handleFilterChange} // Pass filter change handler
-      data={data} // Pass the actual data to the child component
-    />
+
+          <InvoiceDataTableModule
+            config={config}
+            filters={filters} // Pass filters state to child component
+            onFilterChange={handleFilterChange} // Pass filter change handler
+            data={data} // Pass the actual data to the child component
+          />
+      
   );
 }

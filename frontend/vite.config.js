@@ -2,6 +2,8 @@ import path from 'path';
 
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
+import { sentryVitePlugin } from "@sentry/vite-plugin";
+
 
 export default ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
@@ -12,11 +14,21 @@ export default ({ mode }) => {
       : 'http://localhost:8888/';
 
   const config = {
-    plugins: [react()],
+    build: {
+      sourcemap: true, // Source map generation must be turned on
+    },
+    plugins: [
+      react(),
+      sentryVitePlugin({
+        authToken: process.env.SENTRY_AUTH_TOKEN,
+        org: "personal-crm-el-gato-con-bolsa",
+        project: "react-crm-personal-gcb",
+      }),
+    ],
     resolve: {
       base: '/',
       alias: {
-        '@': path.resolve(__dirname, 'src'),
+        '@': path.resolve(__dirname, './src'),
       },
     },
     server: {

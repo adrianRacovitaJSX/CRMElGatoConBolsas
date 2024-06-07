@@ -111,14 +111,12 @@ export default function AutoCompleteAsync({
       onSearch={onSearch}
       onChange={(newValue) => {
         if (onChange) {
-          // Encuentra el producto seleccionado en las opciones
           const selectedProduct = selectOptions.find(option => option[outputValue] === newValue);
           if (selectedProduct) {
-            // Pasa todo el objeto del producto seleccionado a la función onChange
             onChange(selectedProduct);
           }
         }
-      }}      
+      }}     
       onClear={() => {
         setOptions([]);
         setCurrentValue(undefined);

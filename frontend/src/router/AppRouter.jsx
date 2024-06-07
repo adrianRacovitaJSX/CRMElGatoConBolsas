@@ -1,3 +1,4 @@
+import LeadsWeb from '@/pages/LeadsWeb';
 import { lazy } from 'react';
 
 import { useRoutes } from 'react-router-dom';
@@ -5,14 +6,14 @@ import { Navigate } from 'react-router-dom';
 
 const Logout = lazy(() => import('@/pages/Logout.jsx'));
 const NotFound = lazy(() => import('@/pages/NotFound.jsx'));
-
+const Informes = lazy(() => import('@/pages/Informes'));
 const Dashboard = lazy(() => import('@/pages/Dashboard'));
 const Customer = lazy(() => import('@/pages/Customer'));
 const Inventory = lazy(() => import('@/pages/Inventory'));
+const Testing = lazy(() => import('@/pages/Testing'));
 const Order = lazy(() => import('@/pages/Order'));
-const Invoice = lazy(() => import('@/pages/Invoice'));
 const InvoiceCreate = lazy(() => import('@/pages/Invoice/InvoiceCreate'));
-
+const Invoice = lazy(() => import('@/pages/Invoice'));
 const InvoiceRead = lazy(() => import('@/pages/Invoice/InvoiceRead'));
 const InvoiceUpdate = lazy(() => import('@/pages/Invoice/InvoiceUpdate'));
 const InvoiceRecordPayment = lazy(() => import('@/pages/Invoice/InvoiceRecordPayment'));
@@ -38,14 +39,15 @@ const Offer = lazy(() => import('@/pages/Offer/index'));
 const OfferCreate = lazy(() => import('@/pages/Offer/OfferCreate'));
 const OfferRead = lazy(() => import('@/pages/Offer/OfferRead'));
 const OfferUpdate = lazy(() => import('@/pages/Offer/OfferUpdate'));
-
+const CrearAlbaran = lazy(() => import('@/pages/CreateQuote'));
 const ExpenseCategory = lazy(() => import('@/pages/ExpenseCategory'));
 const Expense = lazy(() => import('@/pages/Expense'));
 const ProductCategory = lazy(() => import('@/pages/ProductCategory'));
 const Product = lazy(() => import('@/pages/Product'));
-
+const Pedidos = lazy(() => import('@/pages/Pedidos'));
 const People = lazy(() => import('@/pages/People'));
 const Company = lazy(() => import('@/pages/Company'));
+const CrearFactura = lazy(() => import('@/pages/CreateInvoice'));
 
 const About = lazy(() => import('@/pages/About'));
 
@@ -54,6 +56,18 @@ export default function AppRouter() {
     {
       path: '/login',
       element: <Navigate to="/" />,
+    },
+    {
+      path: '/crear-factura',
+      element: <CrearFactura />,
+    },
+    {
+      path: '/crear-albaran',
+      element: <CrearAlbaran />,
+    },
+    {
+      path: '/informes',
+      element: <Informes />,
     },
     {
       path: '/verify/*',
@@ -112,8 +126,16 @@ export default function AppRouter() {
       element: <Order />,
     },
     {
+      path: '/pedidos',
+      element: <Pedidos />,
+    },
+    {
       path: '/invoice',
       element: <Invoice />,
+    },
+    {
+      path: '/leads-web',
+      element: <LeadsWeb />,
     },
     {
       path: '/invoice/create',
@@ -134,6 +156,10 @@ export default function AppRouter() {
     {
       path: '/quote',
       element: <Quote />,
+    },
+    {
+      path: '/testing',
+      element: <Testing />,
     },
     {
       path: '/quote/create',

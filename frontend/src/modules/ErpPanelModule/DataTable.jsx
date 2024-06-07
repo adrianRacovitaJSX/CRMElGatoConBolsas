@@ -25,15 +25,29 @@ function AddNewItem({ config }) {
   const navigate = useNavigate();
   const { ADD_NEW_ENTITY, entity } = config;
 
-  const handleClick = () => {
-    navigate(`/${entity.toLowerCase()}/create`);
+  const handleInvoiceClick = () => {
+    navigate(`/crear-factura`);
   };
 
-  return (
-    <Button onClick={handleClick} type="primary" icon={<PlusOutlined />}>
+  const handleQuoteClick = () => {
+    navigate(`/crear-albaran`);
+  };
+
+  if (entity === 'invoice') {
+    return (
+      <Button onClick={handleInvoiceClick} type="primary" icon={<PlusOutlined />}>
+        {ADD_NEW_ENTITY}
+      </Button>
+    );
+  } 
+  
+  if (entity === 'quote') {
+    return (
+    <Button onClick={handleQuoteClick} type="primary" icon={<PlusOutlined />}>
       {ADD_NEW_ENTITY}
     </Button>
-  );
+    );
+  };
 }
 
 export default function DataTable({ config, extra = [] }) {
@@ -174,7 +188,7 @@ export default function DataTable({ config, extra = [] }) {
   };
 
   // Function to filter dataSource based on searchValue
-  const filteredDataSource = dataSource.filter(item => {
+  const filteredDataSource = dataSource.filter((item) => {
     const clientName = item.client ? item.client.name.toLowerCase() : '';
     const invoiceNumber = item.number ? item.number.toString() : ''; // Convert invoice number to string for comparison
     return clientName.includes(searchValue.toLowerCase()) || invoiceNumber.includes(searchValue);
@@ -195,17 +209,19 @@ export default function DataTable({ config, extra = [] }) {
           padding: '20px 0px',
         }}
       >
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <Search
-          placeholder="Busca por cliente o nº de factura"
-          onChange={handleSearch}
-          value={searchValue}
-          style={{ width: '300px', marginBottom: '10px' }}
-        />
-        <span style={{ alignSelf: 'flex-start', fontSize: '12px', color: '#999' }}>Solo busca en la página actual, si necesitas más información aumenta el número de facturas que se muestran a 100, o ve cambiando de página.</span>
-      </div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <Search
+            placeholder="Busca por cliente o nº de factura"
+            onChange={handleSearch}
+            value={searchValue}
+            style={{ width: '300px', marginBottom: '10px' }}
+          />
+          <span style={{ alignSelf: 'flex-start', fontSize: '12px', color: '#999' }}>
+            Solo busca en la página actual, si necesitas más información aumenta el número de
+            facturas que se muestran a 100, o ve cambiando de página.
+          </span>
+        </div>
       </PageHeader>
-
 
       <Table
         columns={dataTableColumns}
