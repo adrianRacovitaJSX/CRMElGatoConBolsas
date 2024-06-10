@@ -6,6 +6,11 @@ const appControllers = require('@/controllers/appControllers');
 const { routesList } = require('@/models/utils');
 
 const routerApp = (entity, controller) => {
+
+  if (entity === 'product') {
+    router.route(`/${entity}/all`).get(hasPermission('read'), catchErrors(controller['listAll']));
+  }
+  
   router
     .route(`/${entity}/create`)
     .post(hasPermission('create'), catchErrors(controller['create']));
@@ -20,6 +25,7 @@ const routerApp = (entity, controller) => {
   router.route(`/${entity}/list`).get(hasPermission('read'), catchErrors(controller['list']));
   router.route(`/${entity}/filter`).get(hasPermission('read'), catchErrors(controller['filter']));
   router.route(`/${entity}/summary`).get(hasPermission('read'), catchErrors(controller['summary']));
+  
 
   if (entity === 'invoice' || entity === 'quote' || entity === 'offer' || entity === 'payment') {
     router.route(`/${entity}/mail`).post(hasPermission('update'), catchErrors(controller['mail']));
