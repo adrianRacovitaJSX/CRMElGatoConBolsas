@@ -140,7 +140,7 @@ export default function HeaderContent() {
         {/* </Badge> */}
       </Dropdown>
       <Button type="primary" onClick={goToEmpresa} className='mt-1'>
-        Accede a CRM Empresa
+        CRM Empresa
       </Button>
       <SelectLanguage />
     </Header>
